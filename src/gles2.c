@@ -18,11 +18,11 @@
 // MACROS
 // -------------------------------------------------------------------------------------------------
 
-#define __GL_180_PI_RAD 57.295780
-#define __GL_PI_180_RAD 0.017453
+#define __GLES2_180_PI_RAD 57.295780
+#define __GLES2_PI_180_RAD 0.017453
 
-#define __GL_DEGREES_TO_RADIANS(__x) (__x * __GL_PI_180_RAD)
-#define __GL_RADIANS_TO_DEGREES(__x) (__x * __GL_180_PI_RAD)
+#define __GLES2_DEGREES_TO_RADIANS(__x) (__x * __GLES2_PI_180_RAD)
+#define __GLES2_RADIANS_TO_DEGREES(__x) (__x * __GLES2_180_PI_RAD)
 
 // -------------------------------------------------------------------------------------------------
 // STATIC VARIABLES
@@ -37,7 +37,7 @@ static MatrixState*  _gl_projection_matrix = NULL;
 // MACROS
 // -------------------------------------------------------------------------------------------------
 
-#define __GL_FREE_STATE(__state) \
+#define __GLES2_FREE_STATE(__state) \
     while (NULL != __state) { \
         next = __state->next; \
         free(__state); \
@@ -51,9 +51,9 @@ static MatrixState*  _gl_projection_matrix = NULL;
 void gl_cleanup () {
     MatrixState* next = NULL;
 
-    __GL_FREE_STATE(_gl_modelview_matrix);
-    __GL_FREE_STATE(_gl_projection_matrix);
-    __GL_FREE_STATE(_gl_matrix_cache);
+    __GLES2_FREE_STATE(_gl_modelview_matrix);
+    __GLES2_FREE_STATE(_gl_projection_matrix);
+    __GLES2_FREE_STATE(_gl_matrix_cache);
 }
 
 void gl_frustum (float left, float right, float bottom, float top, float near, float far) {
@@ -162,7 +162,7 @@ void gl_rotate (float x, float y, float z) {
     matrix4 result;
 
     // x
-    radians = __GL_DEGREES_TO_RADIANS(x);
+    radians = __GLES2_DEGREES_TO_RADIANS(x);
 
     gl_identity(matrix);
 
@@ -175,7 +175,7 @@ void gl_rotate (float x, float y, float z) {
     memcpy((*_gl_current_matrix)->matrix, result, sizeof(matrix4));
 
     // y
-    radians = __GL_DEGREES_TO_RADIANS(y);
+    radians = __GLES2_DEGREES_TO_RADIANS(y);
 
     gl_identity(matrix);
 
@@ -188,7 +188,7 @@ void gl_rotate (float x, float y, float z) {
     memcpy((*_gl_current_matrix)->matrix, result, sizeof(matrix4));
 
     // z
-    radians = __GL_DEGREES_TO_RADIANS(z);
+    radians = __GLES2_DEGREES_TO_RADIANS(z);
 
     gl_identity(matrix);
 
