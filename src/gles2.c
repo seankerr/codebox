@@ -34,35 +34,26 @@ static MatrixState*  _gl_matrix_cache      = NULL;
 static MatrixState*  _gl_projection_matrix = NULL;
 
 // -------------------------------------------------------------------------------------------------
+// MACROS
+// -------------------------------------------------------------------------------------------------
+
+#define __GL_FREE_STATE(__state) \
+    while (NULL != __state) { \
+        next = __state->next; \
+        free(__state); \
+        __state = next; \
+    }
+
+// -------------------------------------------------------------------------------------------------
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 
 void gl_cleanup () {
-    MatrixState* state = NULL;
+    MatrixState* next = NULL;
 
-    while (NULL != _gl_modelview_matrix) {
-        state = _gl_modelview_matrix->next;
-
-        free(_gl_modelview_matrix);
-
-        _gl_modelview_matrix = state;
-    }
-
-    while (NULL != _gl_projection_matrix) {
-        state = _gl_projection_matrix->next;
-
-        free(_gl_projection_matrix);
-
-        _gl_projection_matrix = state;
-    }
-
-    while (NULL != _gl_matrix_cache) {
-        state = _gl_matrix_cache->next;
-
-        free(_gl_matrix_cache);
-
-        _gl_matrix_cache = state;
-    }
+    __GL_FREE_STATE(_gl_modelview_matrix);
+    __GL_FREE_STATE(_gl_projection_matrix);
+    __GL_FREE_STATE(_gl_matrix_cache);
 }
 
 void gl_frustum (float left, float right, float bottom, float top, float near, float far) {
