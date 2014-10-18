@@ -1,76 +1,58 @@
-AR=ar
-CC=gcc
+AR = ar
+CC = gcc
 
-BUILD=build
-LIB=lib
-SRC=src
-TEST=test
-CFLAGS=-Wall -Werror -std=c99 -pedantic -fpic -c -I include
-LFLAGS=
+BUILD  = build
+LIB    = lib
+SRC    = src
+TEST   = test
+CFLAGS = -Wall -Werror -std=c99 -pedantic -fpic -c -I include
+LFLAGS = -lm
 
-SOURCE=$(shell find $(SRC) -type f -iname '*.c')
+SOURCES=$(shell find $(SRC)/ -type f -iname '*.c')
+OBJECTS=$(patsubst $(SRC)/%.c, $(BUILD)/%.o, $(SOURCES))
 
-DEBUG_OBJ=$(patsubst %.c, %.debug.o, $(SOURCE))
-RELEASE_OBJ=$(patsubst %.c, %.release.o, $(SOURCE))
+.PHONY: debug
+debug: CFLAGS     += -g
+debug: TARGET_DIR  = debug
 
-BUILD_DEBUG_OBJ=$(patsubst $(SRC)/%, $(BUILD)/%, $(DEBUG_OBJ))
-BUILD_RELEASE_OBJ=$(patsubst $(SRC)/%, $(BUILD)/%, $(RELEASE_OBJ))
+.PHONY: release
+release: CFLAGS     += -DNDEBUG
+release: TARGET_DIR  = release
 
 test: debug
 	$(CC) $(CFLAGS) -o build/test.o $(TEST)/test.c
-	$(CC) $(BUILD)/*.debug.o $(BUILD)/**/*.debug.o $(BUILD)/test.o -o $(BUILD)/test $(LFLAGS)
+	$(CC) $(BUILD)/*.o \
+	      $(BUILD)/**/*.o \
+	      -o $(BUILD)/test $(LFLAGS)
 
-debug: $(BUILD_DEBUG_OBJ)
-	@if [ ! -d $(LIB)/debug ]; then mkdir -p $(LIB)/debug; fi
+debug:   lib
+release: lib
 
-	@if [ "$(shell uname)" != "Darwin" ]; then \
-		$(CC) -shared \
-		      $(BUILD)/*.debug.o \
-		      $(BUILD)/**/*.debug.o \
-		      -o $(LIB)/debug/libcodebox.so \
-		      $(LFLAGS); \
-	else \
-		$(CC) -dynamiclib \
-		      $(BUILD)/*.debug.o \
-		      $(BUILD)/**/*.debug.o \
-		      -o $(LIB)/debug/libcodebox.dylib \
-		      $(LFLAGS); \
-	fi
+$(BUILD)/%.o: $(SRC)/%.c
+	@if [ ! -d $(shell dirname $@) ]; then mkdir -p $(shell dirname $@); fi
 
-	$(AR) rcs $(LIB)/debug/libcodebox.a \
-		$(BUILD)/*.debug.o \
-		$(BUILD)/**/*.debug.o
+	$(CC) $(CFLAGS) $< -o $@
 
-release: $(BUILD_RELEASE_OBJ)
-	@if [ ! -d $(LIB)/release ]; then mkdir -p $(LIB)/release; fi
+lib: $(OBJECTS)
+	@if [ ! -d $(LIB)/$(TARGET_DIR) ]; then mkdir -p $(LIB)/$(TARGET_DIR); fi
 
 	@if [ "$(shell uname)" != "Darwin" ]; then \
 		$(CC) -shared \
-		      $(BUILD)/*.release.o \
-		      $(BUILD)/**/*.release.o \
-		      -o $(LIB)/release/libcodebox.so \
+		      $(BUILD)/*.o \
+		      $(BUILD)/**/*.o \
+		      -o $(LIB)/$(TARGET_DIR)/libcodebox.so \
 		      $(LFLAGS); \
 	else \
 		$(CC) -dynamiclib \
-		      $(BUILD)/*.release.o \
-		      $(BUILD)/**/*.release.o \
-		      -o $(LIB)/release/libcodebox.dylib \
+		      $(BUILD)/*.o \
+		      $(BUILD)/**/*.o \
+		      -o $(LIB)/$(TARGET_DIR)/libcodebox.dylib \
 		      $(LFLAGS); \
 	fi
 
-	$(AR) rcs $(LIB)/release/libcodebox.a \
-		$(BUILD)/*.release.o \
-		$(BUILD)/**/*.release.o
-
-$(BUILD_DEBUG_OBJ):
-	$(shell mkdir -p `dirname $@` >/dev/null)
-
-	$(CC) $(CFLAGS) -o $@ $(shell echo $@ | sed -e 's/\.debug\.o/.c/g' | sed -e 's/$(BUILD)\//$(SRC)\//g')
-
-$(BUILD_RELEASE_OBJ):
-	$(shell mkdir -p `dirname $@` >/dev/null)
-
-	$(CC) $(CFLAGS) -DNDEBUG -o $@ $(shell echo $@ | sed -e 's/\.release\.o/.c/g' | sed -e 's/$(BUILD)\//$(SRC)\//g')
+	$(AR) rcs $(LIB)/$(TARGET_DIR)/libcodebox.a \
+		      $(BUILD)/*.o \
+		      $(BUILD)/**/*.o
 
 clean:
 	@rm -rf $(BUILD) $(LIB)
