@@ -29,8 +29,8 @@
 // -------------------------------------------------------------------------------------------------
 
 static MatrixState** _gl_current_matrix    = NULL;
-static MatrixState*  _gl_modelview_matrix  = NULL;
 static MatrixState*  _gl_matrix_cache      = NULL;
+static MatrixState*  _gl_modelview_matrix  = NULL;
 static MatrixState*  _gl_projection_matrix = NULL;
 
 // -------------------------------------------------------------------------------------------------
