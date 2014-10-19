@@ -150,7 +150,7 @@ void gl_push_matrix () {
         _gl_matrix_cache = state->next;
     }
 
-    memcpy(state->matrix, (*_gl_current_matrix)->matrix, sizeof((*_gl_current_matrix)->matrix));
+    memcpy(state->matrix, (*_gl_current_matrix)->matrix, sizeof(matrix4));
 
     state->next         = *_gl_current_matrix;
     *_gl_current_matrix = state;
