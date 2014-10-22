@@ -19,8 +19,13 @@ extern "C" {
 // MACROS
 // -------------------------------------------------------------------------------------------------
 
-#define GL_PROJECTION 1
-#define GL_MODELVIEW  2
+#ifndef GL_MODELVIEW
+#define GL_MODELVIEW 0x1700
+#endif
+
+#ifndef GL_PROJECTION
+#define GL_PROJECTION 0x1701
+#endif
 
 // -------------------------------------------------------------------------------------------------
 // TYPEDEFS
