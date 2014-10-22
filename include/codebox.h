@@ -13,7 +13,7 @@
 #include "codebox/container/list.h"
 #include "codebox/container/stack.h"
 #include "codebox/container/table.h"
-#include "codebox/gles2.h"
+#include "codebox/gl.h"
 #include "codebox/io.h"
 
 // -------------------------------------------------------------------------------------------------
