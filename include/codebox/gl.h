@@ -77,6 +77,13 @@ void gl_load_identity ();
 void gl_matrix (matrix4 matrix);
 
 /**
+ * Set the matrix mode.
+ *
+ * @param mode The matrix mode.
+ */
+void gl_matrix_mode (uint32_t mode);
+
+/**
  * Replace the current matrix with an orthographic matrix.
  *
  * @param left   The left vertical clipping plane.
@@ -87,13 +94,6 @@ void gl_matrix (matrix4 matrix);
  * @param far    The far clipping plane.
  */
 void gl_ortho (float left, float right, float bottom, float top, float near, float far);
-
-/**
- * Set the matrix mode.
- *
- * @param mode The matrix mode.
- */
-void gl_matrix_mode (uint32_t mode);
 
 /**
  * Pop the current matrix off the matrix stack.
