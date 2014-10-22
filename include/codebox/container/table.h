@@ -6,8 +6,8 @@
  * @author Sean Kerr: sean@code-box.org
  */
 
-#ifndef __TABLE_H
-#define __TABLE_H
+#ifndef __CODEBOX_TABLE_H
+#define __CODEBOX_TABLE_H
 
 #include <stdbool.h>
 #include <stdint.h>

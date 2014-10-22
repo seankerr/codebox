@@ -6,8 +6,8 @@
  * @author Sean Kerr: sean@code-box.org
  */
 
-#ifndef __IO_H
-#define __IO_H
+#ifndef __CODEBOX_IO_H
+#define __CODEBOX_IO_H
 
 #ifdef __cplusplus
 extern "C" {

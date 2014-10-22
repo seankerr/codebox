@@ -6,8 +6,8 @@
  * @author Sean Kerr: sean@code-box.org
  */
 
-#ifndef __BUFFER_H
-#define __BUFFER_H
+#ifndef __CODEBOX_BUFFER_H
+#define __CODEBOX_BUFFER_H
 
 #include <stdbool.h>
 #include <stdint.h>

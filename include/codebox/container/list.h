@@ -6,8 +6,8 @@
  * @author Sean Kerr: sean@code-box.org
  */
 
-#ifndef __LIST_H
-#define __LIST_H
+#ifndef __CODEBOX_LIST_H
+#define __CODEBOX_LIST_H
 
 #include <stdbool.h>
 #include <stdint.h>

@@ -6,8 +6,8 @@
  * @author Sean Kerr: sean@code-box.org
  */
 
-#ifndef __GL_H
-#define __GL_H
+#ifndef __CODEBOX_GL_H
+#define __CODEBOX_GL_H
 
 #include <stdint.h>
 

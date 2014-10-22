@@ -6,8 +6,8 @@
  * @author Sean Kerr: sean@code-box.org
  */
 
-#ifndef __STACK_H
-#define __STACK_H
+#ifndef __CODEBOX_STACK_H
+#define __CODEBOX_STACK_H
 
 #include <stdbool.h>
 #include <stdint.h>
