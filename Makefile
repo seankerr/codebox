@@ -55,4 +55,4 @@ lib: $(OBJECTS)
 		      $(BUILD)/**/*.o
 
 clean:
-	@rm -rf $(BUILD) $(LIB)
+	@rm -rf $(BUILD)
