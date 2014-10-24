@@ -81,6 +81,8 @@ bool list_init (List* list, bool thread_safe) {
     list->tail  = NULL;
 
     if (thread_safe) {
+        list->mutex = (pthread_mutex_t*) malloc(sizeof(pthread_mutex_t));
+
         pthread_mutex_init(list->mutex, NULL);
     }
 

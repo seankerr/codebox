@@ -158,6 +158,8 @@ bool table_init (Table* table, uint32_t bucket_count, float load_factor,
     table->resize_count = (uint32_t) (table->bucket_count * table->load_factor);
 
     if (thread_safe) {
+        table->mutex = (pthread_mutex_t*) malloc(sizeof(pthread_mutex_t));
+
         pthread_mutex_init(table->mutex, NULL);
     }
 

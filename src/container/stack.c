@@ -37,6 +37,8 @@ bool stack_init (Stack* stack, StackType type, bool thread_safe) {
     stack->type  = type;
 
     if (thread_safe) {
+        stack->mutex = (pthread_mutex_t*) malloc(sizeof(pthread_mutex_t));
+
         pthread_mutex_init(stack->mutex, NULL);
     }
 

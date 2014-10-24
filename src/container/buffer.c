@@ -161,6 +161,8 @@ bool buffer_init (Buffer* buffer, int32_t size, bool thread_safe) {
     }
 
     if (thread_safe) {
+        buffer->mutex = (pthread_mutex_t*) malloc(sizeof(pthread_mutex_t));
+
         pthread_mutex_init(buffer->mutex, NULL);
     }
 
