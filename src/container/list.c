@@ -37,6 +37,16 @@
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 
+bool list_cleanup (List* list) {
+    assert(NULL != list);
+
+    if (NULL != list->mutex) {
+        pthread_mutex_destroy(list->mutex);
+    }
+
+    return true;
+}
+
 void* list_get (List* list, uint32_t index) {
     assert(NULL != list);
     assert(0 < list->count);

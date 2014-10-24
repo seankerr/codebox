@@ -23,7 +23,7 @@ void test_table () {
     Table* t = table_new();
 
     assert(NULL != t);
-    assert(table_init_defaults(t));
+    assert(table_init_defaults_ts(t));
 
     assert(table_put_str(t, "Key1", "Value1"));
     assert(table_put_str(t, "Key2", "Value2"));

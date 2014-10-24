@@ -16,6 +16,16 @@
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 
+bool stack_cleanup (Stack* stack) {
+    assert(NULL != stack);
+
+    if (NULL != stack->mutex) {
+        pthread_mutex_destroy(stack->mutex);
+    }
+
+    return true;
+}
+
 bool stack_init (Stack* stack, StackType type, bool thread_safe) {
     assert(NULL != stack);
     assert(0 == stack->count);

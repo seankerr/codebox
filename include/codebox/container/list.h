@@ -79,6 +79,13 @@ typedef struct {
 // -------------------------------------------------------------------------------------------------
 
 /**
+ * Cleanup a list.
+ *
+ * @param list The list.
+ */
+bool list_cleanup (List* list);
+
+/**
  * Retrieve data from a list.
  *
  * @param list  The list.

@@ -63,6 +63,13 @@ typedef struct {
 // -------------------------------------------------------------------------------------------------
 
 /**
+ * Cleanup a stack.
+ *
+ * @param stack The stack.
+ */
+bool stack_cleanup (Stack* stack);
+
+/**
  * Initialize a stack.
  *
  * @param stack       The stack.

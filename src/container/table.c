@@ -68,6 +68,10 @@ bool table_cleanup (Table* table) {
 
     free(table->buckets);
 
+    if (NULL != table->mutex) {
+        pthread_mutex_destroy(table->mutex);
+    }
+
     return true;
 }
 
