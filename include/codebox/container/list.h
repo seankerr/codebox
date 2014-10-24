@@ -121,6 +121,13 @@ bool list_insert (List* list, uint32_t index, void* data);
 bool list_insert_ts (List* list, uint32_t index, void* data);
 
 /**
+ * Lock a list if it was initialized as thread-safe.
+ *
+ * @param list The list.
+ */
+void list_lock (List* list);
+
+/**
  * Create a new list.
  */
 List* list_new ();
@@ -200,6 +207,13 @@ void* list_remove (List* list, uint32_t index);
  * @param index The index.
  */
 void* list_remove_ts (List* list, uint32_t index);
+
+/**
+ * Unlock a list if it was initialized as thread-safe.
+ *
+ * @param list The list.
+ */
+void list_unlock (List* list);
 
 #ifdef __cplusplus
 }

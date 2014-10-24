@@ -33,6 +33,13 @@ bool stack_init (Stack* stack, StackType type, bool thread_safe) {
     return true;
 }
 
+void stack_lock (Stack* stack) {
+    assert(NULL != stack);
+    assert(NULL != stack->mutex);
+
+    pthread_mutex_lock(stack->mutex);
+}
+
 Stack* stack_new () {
     Stack* stack = (Stack*) malloc(sizeof(Stack));
 
@@ -114,4 +121,11 @@ bool stack_push_ts (Stack* stack, void* data) {
     pthread_mutex_unlock(stack->mutex);
 
     return ret;
+}
+
+void stack_unlock (Stack* stack) {
+    assert(NULL != stack);
+    assert(NULL != stack->mutex);
+
+    pthread_mutex_unlock(stack->mutex);
 }

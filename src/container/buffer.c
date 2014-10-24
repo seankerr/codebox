@@ -210,6 +210,13 @@ bool buffer_insert_ts (Buffer* buffer, int32_t index, unsigned char* data, int32
     return ret;
 }
 
+void buffer_lock (Buffer* buffer) {
+    assert(NULL != buffer);
+    assert(NULL != buffer->mutex);
+
+    pthread_mutex_lock(buffer->mutex);
+}
+
 Buffer* buffer_new () {
     Buffer* buffer = (Buffer*) malloc(sizeof(Buffer));
 
@@ -320,6 +327,13 @@ void buffer_truncate_ts (Buffer* buffer) {
     pthread_mutex_lock(buffer->mutex);
 
     buffer_truncate(buffer);
+
+    pthread_mutex_unlock(buffer->mutex);
+}
+
+void buffer_unlock (Buffer* buffer) {
+    assert(NULL != buffer);
+    assert(NULL != buffer->mutex);
 
     pthread_mutex_unlock(buffer->mutex);
 }

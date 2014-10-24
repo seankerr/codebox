@@ -121,6 +121,13 @@ bool list_insert_ts (List* list, uint32_t index, void* data) {
     return ret;
 }
 
+void list_lock (List* list) {
+    assert(NULL != list);
+    assert(NULL != list->mutex);
+
+    pthread_mutex_lock(list->mutex);
+}
+
 List* list_new () {
     List* list = (List*) malloc(sizeof(List));
 
@@ -320,4 +327,11 @@ void* list_remove_ts (List* list, uint32_t index) {
     pthread_mutex_unlock(list->mutex);
 
     return ret;
+}
+
+void list_unlock (List* list) {
+    assert(NULL != list);
+    assert(NULL != list->mutex);
+
+    pthread_mutex_unlock(list->mutex);
 }

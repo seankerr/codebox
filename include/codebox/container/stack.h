@@ -72,6 +72,13 @@ typedef struct {
 bool stack_init (Stack* stack, StackType type, bool thread_safe);
 
 /**
+ * Lock a stack if it was initialized as thread-safe.
+ *
+ * @param stack The stack.
+ */
+void stack_lock (Stack* stack);
+
+/**
  * Create a new stack.
  */
 Stack* stack_new ();
@@ -107,6 +114,13 @@ bool stack_push (Stack* stack, void* data);
  * @param data  The data.
  */
 bool stack_push_ts (Stack* stack, void* data);
+
+/**
+ * Unlock a stack if it was initialized as thread-safe.
+ *
+ * @param stack The stack.
+ */
+void stack_unlock (Stack* stack);
 
 #ifdef __cplusplus
 }

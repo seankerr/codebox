@@ -178,6 +178,13 @@ bool table_init_defaults_ts (Table* table) {
                       true);
 }
 
+void table_lock (Table* table) {
+    assert(NULL != table);
+    assert(NULL != table->mutex);
+
+    pthread_mutex_lock(table->mutex);
+}
+
 Table* table_new () {
     Table* table = (Table*) malloc(sizeof(Table));
 
@@ -323,4 +330,11 @@ bool table_resize_ts (Table* table, uint32_t bucket_count) {
     pthread_mutex_unlock(table->mutex);
 
     return ret;
+}
+
+void table_unlock (Table* table) {
+    assert(NULL != table);
+    assert(NULL != table->mutex);
+
+    pthread_mutex_unlock(table->mutex);
 }

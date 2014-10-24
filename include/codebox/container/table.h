@@ -197,6 +197,13 @@ bool table_init_defaults (Table* table);
 bool table_init_defaults_ts (Table* table);
 
 /**
+ * Lock a table if it was initialized as thread-safe.
+ *
+ * @param table The table.
+ */
+void table_lock (Table* table);
+
+/**
  * Create a new hash table.
  */
 Table* table_new ();
@@ -254,6 +261,13 @@ bool table_resize (Table* table, uint32_t bucket_count);
  * @param bucket_count The estimated bucket count.
  */
 bool table_resize_ts (Table* table, uint32_t bucket_count);
+
+/**
+ * Unlock a table if it was initialized as thread-safe.
+ *
+ * @param table The table.
+ */
+void table_unlock (Table* table);
 
 #ifdef __cplusplus
 }

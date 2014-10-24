@@ -147,6 +147,13 @@ bool buffer_insert (Buffer* buffer, int32_t index, unsigned char* data, int32_t 
 bool buffer_insert_ts (Buffer* buffer, int32_t index, unsigned char* data, int32_t length);
 
 /**
+ * Lock a buffer if it was initialized as thread-safe.
+ *
+ * @param buffer The buffer.
+ */
+void buffer_lock (Buffer* buffer);
+
+/**
  * Create a new buffer.
  */
 Buffer* buffer_new ();
@@ -198,6 +205,13 @@ void buffer_truncate (Buffer* buffer);
  * @param buffer The buffer.
  */
 void buffer_truncate_ts (Buffer* buffer);
+
+/**
+ * Unlock a buffer if it was initialized as thread-safe.
+ *
+ * @param buffer The buffer.
+ */
+void buffer_unlock (Buffer* buffer);
 
 #ifdef __cplusplus
 }
