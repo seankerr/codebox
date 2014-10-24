@@ -9,6 +9,7 @@
 #ifndef __CODEBOX_LIST_H
 #define __CODEBOX_LIST_H
 
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -34,6 +35,9 @@ typedef struct __list_item {
 typedef struct {
     /** The head item. */
     ListItem* head;
+
+    /** The mutex. */
+    pthread_mutex_t* mutex;
 
     /** The tail item. */
     ListItem* tail;
@@ -83,11 +87,20 @@ typedef struct {
 void* list_get (List* list, uint32_t index);
 
 /**
+ * Retrieve data from a list using thread safety.
+ *
+ * @param list  The list.
+ * @param index The index.
+ */
+void* list_get_ts (List* list, uint32_t index);
+
+/**
  * Initialize a list.
  *
- * @param list The list.
+ * @param list        The list.
+ * @param thread_safe Indicates that a mutex will be initialized.
  */
-bool list_init (List* list);
+bool list_init (List* list, bool thread_safe);
 
 /**
  * Insert data into a list.
@@ -97,6 +110,15 @@ bool list_init (List* list);
  * @param data  The data.
  */
 bool list_insert (List* list, uint32_t index, void* data);
+
+/**
+ * Insert data into a list using thread safety.
+ *
+ * @param list  The list.
+ * @param index The index.
+ * @param data  The data.
+ */
+bool list_insert_ts (List* list, uint32_t index, void* data);
 
 /**
  * Create a new list.
@@ -111,11 +133,25 @@ List* list_new ();
 void* list_pop_head (List* list);
 
 /**
+ * Pop data off the head of a list using thread safety.
+ *
+ * @param list The list.
+ */
+void* list_pop_head_ts (List* list);
+
+/**
  * Pop data off the tail of a list.
  *
  * @param list The list.
  */
 void* list_pop_tail (List* list);
+
+/**
+ * Pop data off the tail of a list using thread safety.
+ *
+ * @param list The list.
+ */
+void* list_pop_tail_ts (List* list);
 
 /**
  * Push data onto the head of a list.
@@ -126,6 +162,14 @@ void* list_pop_tail (List* list);
 bool list_push_head (List* list, void* data);
 
 /**
+ * Push data onto the head of a list using thread safety.
+ *
+ * @param list The list.
+ * @param data The data.
+ */
+bool list_push_head_ts (List* list, void* data);
+
+/**
  * Push data onto the tail of a list.
  *
  * @param list The list.
@@ -134,12 +178,28 @@ bool list_push_head (List* list, void* data);
 bool list_push_tail (List* list, void* data);
 
 /**
+ * Push data onto the tail of a list using thread safety.
+ *
+ * @param list The list.
+ * @param data The data.
+ */
+bool list_push_tail_ts (List* list, void* data);
+
+/**
  * Remove data from a list.
  *
  * @param list  The list.
  * @param index The index.
  */
 void* list_remove (List* list, uint32_t index);
+
+/**
+ * Remove data from a list using thread safety.
+ *
+ * @param list  The list.
+ * @param index The index.
+ */
+void* list_remove_ts (List* list, uint32_t index);
 
 #ifdef __cplusplus
 }

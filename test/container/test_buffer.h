@@ -30,7 +30,7 @@ void test_buffer () {
     Buffer* c = NULL;
 
     assert(NULL != b);
-    assert(buffer_init(b, 1));
+    assert(buffer_init(b, 1, false));
 
     assert(__BUFFER_CHUNK_SIZE == b->size);
     assert(buffer_append_str(b, "Buffer"));

@@ -16,14 +16,19 @@
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 
-bool stack_init (Stack* stack, StackType type) {
+bool stack_init (Stack* stack, StackType type, bool thread_safe) {
     assert(NULL != stack);
     assert(0 == stack->count);
 
     stack->count = 0;
     stack->head  = NULL;
+    stack->mutex = NULL;
     stack->tail  = NULL;
     stack->type  = type;
+
+    if (thread_safe) {
+        pthread_mutex_init(stack->mutex, NULL);
+    }
 
     return true;
 }
@@ -55,6 +60,19 @@ void* stack_pop (Stack* stack) {
     return data;
 }
 
+void* stack_pop_ts (Stack* stack) {
+    assert(NULL != stack);
+    assert(NULL != stack->mutex);
+
+    pthread_mutex_lock(stack->mutex);
+
+    void* ret = stack_pop(stack);
+
+    pthread_mutex_unlock(stack->mutex);
+
+    return ret;
+}
+
 bool stack_push (Stack* stack, void* data) {
     assert(NULL != stack);
 
@@ -83,4 +101,17 @@ bool stack_push (Stack* stack, void* data) {
     stack->count++;
 
     return true;
+}
+
+bool stack_push_ts (Stack* stack, void* data) {
+    assert(NULL != stack);
+    assert(NULL != stack->mutex);
+
+    pthread_mutex_lock(stack->mutex);
+
+    bool ret = stack_push(stack, data);
+
+    pthread_mutex_unlock(stack->mutex);
+
+    return ret;
 }

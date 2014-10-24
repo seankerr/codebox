@@ -26,7 +26,7 @@ void test_stack () {
     assert(NULL != s);
 
     // lifo tests
-    assert(stack_init(s, STACK_LIFO));
+    assert(stack_init(s, STACK_LIFO, false));
 
     // init check
     assert(0 == s->count);
@@ -48,7 +48,7 @@ void test_stack () {
     assert(0 == s->count);
 
     // fifo tests
-    assert(stack_init(s, STACK_FIFO));
+    assert(stack_init(s, STACK_FIFO, false));
 
     // init check
     assert(0 == s->count);

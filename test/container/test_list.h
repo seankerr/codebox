@@ -22,7 +22,7 @@ void test_list () {
     List* l = list_new();
 
     assert(NULL != l);
-    assert(list_init(l));
+    assert(list_init(l, false));
 
     // init check
     assert(0 == l->count);

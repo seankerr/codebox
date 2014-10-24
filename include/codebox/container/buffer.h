@@ -9,6 +9,7 @@
 #ifndef __CODEBOX_BUFFER_H
 #define __CODEBOX_BUFFER_H
 
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -24,6 +25,9 @@ extern "C" {
 typedef struct {
     /** The data. */
     unsigned char* data;
+
+    /** The mutex. */
+    pthread_mutex_t* mutex;
 
     /** The length of the data. */
     int32_t length;
@@ -62,6 +66,15 @@ typedef struct {
 bool buffer_append (Buffer* buffer, unsigned char* data, int32_t length);
 
 /**
+ * Append data onto the end of a buffer using thread safety.
+ *
+ * @param buffer The buffer.
+ * @param data   The data.
+ * @param length The length of the data.
+ */
+bool buffer_append_ts (Buffer* buffer, unsigned char* data, int32_t length);
+
+/**
  * Cleanup a buffer.
  *
  * @param buffer The buffer.
@@ -78,6 +91,15 @@ bool buffer_cleanup (Buffer* buffer);
 Buffer* buffer_copy (Buffer* buffer, int32_t start, int32_t length);
 
 /**
+ * Copy a slice of a buffer using thread safety.
+ *
+ * @param buffer The buffer.
+ * @param start  The starting position.
+ * @param length The length.
+ */
+Buffer* buffer_copy_ts (Buffer* buffer, int32_t start, int32_t length);
+
+/**
  * Find the starting index of data in a buffer.
  *
  * @param buffer The buffer.
@@ -87,12 +109,22 @@ Buffer* buffer_copy (Buffer* buffer, int32_t start, int32_t length);
 int32_t buffer_indexof (Buffer* buffer, unsigned char* data, int32_t length);
 
 /**
- * Initialize a buffer.
+ * Find the starting index of data in a buffer using thread safety.
  *
  * @param buffer The buffer.
- * @param size   The initial size.
+ * @param data   The data.
+ * @param length The length of the data.
  */
-bool buffer_init (Buffer* buffer, int32_t size);
+int32_t buffer_indexof_ts (Buffer* buffer, unsigned char* data, int32_t length);
+
+/**
+ * Initialize a buffer.
+ *
+ * @param buffer      The buffer.
+ * @param size        The initial size.
+ * @param thread_safe Indicates that a mutex will be initialized.
+ */
+bool buffer_init (Buffer* buffer, int32_t size, bool thread_safe);
 
 /**
  * Insert data into a buffer.
@@ -103,6 +135,16 @@ bool buffer_init (Buffer* buffer, int32_t size);
  * @param length The length of the data.
  */
 bool buffer_insert (Buffer* buffer, int32_t index, unsigned char* data, int32_t length);
+
+/**
+ * Insert data into a buffer using thread safety.
+ *
+ * @param buffer The buffer.
+ * @param index  The index.
+ * @param data   The data.
+ * @param length The length of the data.
+ */
+bool buffer_insert_ts (Buffer* buffer, int32_t index, unsigned char* data, int32_t length);
 
 /**
  * Create a new buffer.
@@ -119,12 +161,43 @@ Buffer* buffer_new ();
 bool buffer_remove (Buffer* buffer, int32_t start, int32_t length);
 
 /**
+ * Remove a slice of a buffer using thread safety.
+ *
+ * @param buffer The buffer.
+ * @param start  The starting position.
+ * @param length The length.
+ */
+bool buffer_remove_ts (Buffer* buffer, int32_t start, int32_t length);
+
+/**
  * Resize a buffer.
  *
  * @param buffer The buffer.
  * @param size   The expected size.
  */
 bool buffer_resize (Buffer* buffer, int32_t size);
+
+/**
+ * Resize a buffer using thread safety.
+ *
+ * @param buffer The buffer.
+ * @param size   The expected size.
+ */
+bool buffer_resize_ts (Buffer* buffer, int32_t size);
+
+/**
+ * Truncate a buffer.
+ *
+ * @param buffer The buffer.
+ */
+void buffer_truncate (Buffer* buffer);
+
+/**
+ * Truncate a buffer using thread safety.
+ *
+ * @param buffer The buffer.
+ */
+void buffer_truncate_ts (Buffer* buffer);
 
 #ifdef __cplusplus
 }

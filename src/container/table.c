@@ -83,6 +83,19 @@ void* table_get (Table* table, unsigned char* key, uint32_t length) {
     return NULL != bucket ? bucket->value : NULL;
 }
 
+void* table_get_ts (Table* table, unsigned char* key, uint32_t length) {
+    assert(NULL != table);
+    assert(NULL != table->mutex);
+
+    pthread_mutex_lock(table->mutex);
+
+    void* ret = table_get(table, key, length);
+
+    pthread_mutex_unlock(table->mutex);
+
+    return ret;
+}
+
 bool table_has_key (Table* table, unsigned char* key, uint32_t length) {
     assert(NULL != table);
     assert(NULL != key);
@@ -95,10 +108,24 @@ bool table_has_key (Table* table, unsigned char* key, uint32_t length) {
     return NULL != bucket;
 }
 
+bool table_has_key_ts (Table* table, unsigned char* key, uint32_t length) {
+    assert(NULL != table);
+    assert(NULL != table->mutex);
+
+    pthread_mutex_lock(table->mutex);
+
+    bool ret = table_has_key(table, key, length);
+
+    pthread_mutex_unlock(table->mutex);
+
+    return ret;
+}
+
 bool table_init (Table* table, uint32_t bucket_count, float load_factor,
                  bool (*comp_func) (unsigned char* key1, uint32_t length1,
                                     unsigned char* key2, uint32_t length2),
-                 uint32_t (*hash_func) (unsigned char* key, uint32_t length)) {
+                 uint32_t (*hash_func) (unsigned char* key, uint32_t length),
+                 bool thread_safe) {
     assert(NULL != table);
     assert(NULL == table->buckets);
     assert(NULL != comp_func);
@@ -123,7 +150,12 @@ bool table_init (Table* table, uint32_t bucket_count, float load_factor,
     table->hash_func    = hash_func;
     table->key_count    = 0;
     table->load_factor  = load_factor;
+    table->mutex        = NULL;
     table->resize_count = (uint32_t) (table->bucket_count * table->load_factor);
+
+    if (thread_safe) {
+        pthread_mutex_init(table->mutex, NULL);
+    }
 
     return true;
 }
@@ -133,7 +165,17 @@ bool table_init_defaults (Table* table) {
                       __TABLE_DEFAULT_BUCKET_COUNT,
                       __TABLE_DEFAULT_LOAD_FACTOR,
                       __TABLE_DEFAULT_COMP_FUNC,
-                      __TABLE_DEFAULT_HASH_FUNC);
+                      __TABLE_DEFAULT_HASH_FUNC,
+                      false);
+}
+
+bool table_init_defaults_ts (Table* table) {
+    return table_init(table,
+                      __TABLE_DEFAULT_BUCKET_COUNT,
+                      __TABLE_DEFAULT_LOAD_FACTOR,
+                      __TABLE_DEFAULT_COMP_FUNC,
+                      __TABLE_DEFAULT_HASH_FUNC,
+                      true);
 }
 
 Table* table_new () {
@@ -179,6 +221,19 @@ bool table_put (Table* table, unsigned char* key, uint32_t length, void* value) 
     return true;
 }
 
+bool table_put_ts (Table* table, unsigned char* key, uint32_t length, void* value) {
+    assert(NULL != table);
+    assert(NULL != table->mutex);
+
+    pthread_mutex_lock(table->mutex);
+
+    bool ret = table_put(table, key, length, value);
+
+    pthread_mutex_unlock(table->mutex);
+
+    return ret;
+}
+
 void* table_remove (Table* table, unsigned char* key, uint32_t length) {
     uint32_t hash   = table->hash_func(key, length);
     Bucket** bucket = table->buckets + (hash % table->bucket_count);
@@ -198,6 +253,19 @@ void* table_remove (Table* table, unsigned char* key, uint32_t length) {
     }
 
     return NULL;
+}
+
+void* table_remove_ts (Table* table, unsigned char* key, uint32_t length) {
+    assert(NULL != table);
+    assert(NULL != table->mutex);
+
+    pthread_mutex_lock(table->mutex);
+
+    void* ret = table_remove(table, key, length);
+
+    pthread_mutex_unlock(table->mutex);
+
+    return ret;
 }
 
 bool table_resize (Table* table, uint32_t bucket_count) {
@@ -242,4 +310,17 @@ bool table_resize (Table* table, uint32_t bucket_count) {
     table->resize_count = (uint32_t) (table->bucket_count * table->load_factor);
 
     return true;
+}
+
+bool table_resize_ts (Table* table, uint32_t bucket_count) {
+    assert(NULL != table);
+    assert(NULL != table->mutex);
+
+    pthread_mutex_lock(table->mutex);
+
+    bool ret = table_resize(table, bucket_count);
+
+    pthread_mutex_unlock(table->mutex);
+
+    return ret;
 }

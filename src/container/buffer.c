@@ -50,11 +50,28 @@ bool buffer_append (Buffer* buffer, unsigned char* data, int32_t length) {
     return true;
 }
 
+bool buffer_append_ts (Buffer* buffer, unsigned char* data, int32_t length) {
+    assert(NULL != buffer);
+    assert(NULL != buffer->mutex);
+
+    pthread_mutex_lock(buffer->mutex);
+
+    bool ret = buffer_append(buffer, data, length);
+
+    pthread_mutex_unlock(buffer->mutex);
+
+    return ret;
+}
+
 bool buffer_cleanup (Buffer* buffer) {
     assert(NULL != buffer);
     assert(NULL != buffer->data);
 
     free(buffer->data);
+
+    if (NULL != buffer->mutex) {
+        pthread_mutex_destroy(buffer->mutex);
+    }
 
     return true;
 }
@@ -70,13 +87,31 @@ Buffer* buffer_copy (Buffer* buffer, int32_t start, int32_t length) {
 
     if (NULL == copy) {
         return NULL;
-    } else if (!buffer_init(copy, length) || !buffer_append(copy, buffer->data + start, length)) {
+    } else if (!buffer_init(copy, length, NULL != buffer->mutex)) {
+        free(copy);
+
+        return NULL;
+    } else if (!buffer_append(copy, buffer->data + start, length)) {
         buffer_cleanup(copy);
+        free(copy);
 
         return NULL;
     }
 
     return copy;
+}
+
+Buffer* buffer_copy_ts (Buffer* buffer, int32_t start, int32_t length) {
+    assert(NULL != buffer);
+    assert(NULL != buffer->mutex);
+
+    pthread_mutex_lock(buffer->mutex);
+
+    Buffer* ret = buffer_copy(buffer, start, length);
+
+    pthread_mutex_unlock(buffer->mutex);
+
+    return ret;
 }
 
 int32_t buffer_indexof (Buffer* buffer, unsigned char* data, int32_t length) {
@@ -98,7 +133,20 @@ int32_t buffer_indexof (Buffer* buffer, unsigned char* data, int32_t length) {
     return -1;
 }
 
-bool buffer_init (Buffer* buffer, int32_t size) {
+int32_t buffer_indexof_ts (Buffer* buffer, unsigned char* data, int32_t length) {
+    assert(NULL != buffer);
+    assert(NULL != buffer->mutex);
+
+    pthread_mutex_lock(buffer->mutex);
+
+    int32_t ret = buffer_indexof(buffer, data, length);
+
+    pthread_mutex_unlock(buffer->mutex);
+
+    return ret;
+}
+
+bool buffer_init (Buffer* buffer, int32_t size, bool thread_safe) {
     assert(NULL != buffer);
     assert(NULL == buffer->data);
     assert(0 < size);
@@ -106,8 +154,17 @@ bool buffer_init (Buffer* buffer, int32_t size) {
     buffer->length = 0;
     buffer->size   = __BUFFER_ALIGN_SIZE(size);
     buffer->data   = malloc(buffer->size);
+    buffer->mutex  = NULL;
 
-    return NULL != buffer->data;
+    if (NULL == buffer->data) {
+        return false;
+    }
+
+    if (thread_safe) {
+        pthread_mutex_init(buffer->mutex, NULL);
+    }
+
+    return true;
 }
 
 bool buffer_insert (Buffer* buffer, int32_t index, unsigned char* data, int32_t length) {
@@ -138,6 +195,19 @@ bool buffer_insert (Buffer* buffer, int32_t index, unsigned char* data, int32_t 
     buffer->length += length;
 
     return true;
+}
+
+bool buffer_insert_ts (Buffer* buffer, int32_t index, unsigned char* data, int32_t length) {
+    assert(NULL != buffer);
+    assert(NULL != buffer->mutex);
+
+    pthread_mutex_lock(buffer->mutex);
+
+    bool ret = buffer_insert(buffer, index, data, length);
+
+    pthread_mutex_unlock(buffer->mutex);
+
+    return ret;
 }
 
 Buffer* buffer_new () {
@@ -174,6 +244,19 @@ bool buffer_remove (Buffer* buffer, int32_t start, int32_t length) {
     return true;
 }
 
+bool buffer_remove_ts (Buffer* buffer, int32_t start, int32_t length) {
+    assert(NULL != buffer);
+    assert(NULL != buffer->mutex);
+
+    pthread_mutex_lock(buffer->mutex);
+
+    bool ret = buffer_remove(buffer, start, length);
+
+    pthread_mutex_unlock(buffer->mutex);
+
+    return ret;
+}
+
 bool buffer_resize (Buffer* buffer, int32_t size) {
     assert(NULL != buffer);
     assert(NULL != buffer->data);
@@ -208,4 +291,35 @@ bool buffer_resize (Buffer* buffer, int32_t size) {
     buffer->size   = _size;
 
     return true;
+}
+
+bool buffer_resize_ts (Buffer* buffer, int32_t size) {
+    assert(NULL != buffer);
+    assert(NULL != buffer->mutex);
+
+    pthread_mutex_lock(buffer->mutex);
+
+    bool ret = buffer_resize(buffer, size);
+
+    pthread_mutex_unlock(buffer->mutex);
+
+    return ret;
+}
+
+void buffer_truncate (Buffer* buffer) {
+    assert(NULL != buffer);
+    assert(NULL != buffer->data);
+
+    buffer->length = 0;
+}
+
+void buffer_truncate_ts (Buffer* buffer) {
+    assert(NULL != buffer);
+    assert(NULL != buffer->mutex);
+
+    pthread_mutex_lock(buffer->mutex);
+
+    buffer_truncate(buffer);
+
+    pthread_mutex_unlock(buffer->mutex);
 }

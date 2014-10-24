@@ -9,6 +9,7 @@
 #ifndef __CODEBOX_TABLE_H
 #define __CODEBOX_TABLE_H
 
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -48,6 +49,9 @@ typedef struct {
 
     /** The buckets. */
     Bucket** buckets;
+
+    /** The mutex. */
+    pthread_mutex_t* mutex;
 
     /** The bucket count. */
     uint32_t bucket_count;
@@ -123,6 +127,15 @@ bool table_cleanup (Table* table);
 void* table_get (Table* table, unsigned char* key, uint32_t length);
 
 /**
+ * Retrieve a value from a hash table using thread safety.
+ *
+ * @param table  The hash table.
+ * @param key    The key.
+ * @param length The key length.
+ */
+void* table_get_ts (Table* table, unsigned char* key, uint32_t length);
+
+/**
  * Indicates whether or not a table contains a key.
  *
  * @param table  The table.
@@ -132,6 +145,15 @@ void* table_get (Table* table, unsigned char* key, uint32_t length);
 bool table_has_key (Table* table, unsigned char* key, uint32_t length);
 
 /**
+ * Indicates whether or not a table contains a key using thread safety.
+ *
+ * @param table  The table.
+ * @param key    The key.
+ * @param length The key length.
+ */
+bool table_has_key_ts (Table* table, unsigned char* key, uint32_t length);
+
+/**
  * Initialize a hash table.
  *
  * @param table        The hash table.
@@ -139,11 +161,13 @@ bool table_has_key (Table* table, unsigned char* key, uint32_t length);
  * @param load_factor  The resize load factor.
  * @param comp_func    The comparison function.
  * @param hash_func    The hash function.
+ * @param thread_safe  Indicates that a mutex will be initialized.
  */
 bool table_init (Table* table, uint32_t bucket_count, float load_factor,
                  bool (*comp_func) (unsigned char* key1, uint32_t length1,
                                     unsigned char* key2, uint32_t length2),
-                 uint32_t (*hash_func) (unsigned char* key, uint32_t length));
+                 uint32_t (*hash_func) (unsigned char* key, uint32_t length),
+                 bool thread_safe);
 
 /**
  * Initialize a hash table with default settings.
@@ -157,6 +181,20 @@ bool table_init (Table* table, uint32_t bucket_count, float load_factor,
  * @param table The hash table.
  */
 bool table_init_defaults (Table* table);
+
+/**
+ * Initialize a thread-safe hash table with default settings.
+ *
+ * Defaults:
+ *   * bucket_count = 53
+ *   * load_factor  = 0.75
+ *   * comp_func    = binary
+ *   * hash_func    = djb2
+ *   * thread_safe  = true
+ *
+ * @param table The hash table.
+ */
+bool table_init_defaults_ts (Table* table);
 
 /**
  * Create a new hash table.
@@ -174,6 +212,16 @@ Table* table_new ();
 bool table_put (Table* table, unsigned char* key, uint32_t length, void* value);
 
 /**
+ * Put an item into a hash table using thread safety.
+ *
+ * @param table  The hash table.
+ * @param key    The key.
+ * @param length The key length.
+ * @param value  The value.
+ */
+bool table_put_ts (Table* table, unsigned char* key, uint32_t length, void* value);
+
+/**
  * Remove an item from a hash table.
  *
  * @param table  The hash table.
@@ -183,12 +231,29 @@ bool table_put (Table* table, unsigned char* key, uint32_t length, void* value);
 void* table_remove (Table* table, unsigned char* key, uint32_t length);
 
 /**
+ * Remove an item from a hash table using thread safety.
+ *
+ * @param table  The hash table.
+ * @param key    The key.
+ * @param length The key length.
+ */
+void* table_remove_ts (Table* table, unsigned char* key, uint32_t length);
+
+/**
  * Resize a hash table.
  *
  * @param table        The table.
  * @param bucket_count The estimated bucket count.
  */
 bool table_resize (Table* table, uint32_t bucket_count);
+
+/**
+ * Resize a hash table using thread safety.
+ *
+ * @param table        The table.
+ * @param bucket_count The estimated bucket count.
+ */
+bool table_resize_ts (Table* table, uint32_t bucket_count);
 
 #ifdef __cplusplus
 }

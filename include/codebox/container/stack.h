@@ -9,6 +9,7 @@
 #ifndef __CODEBOX_STACK_H
 #define __CODEBOX_STACK_H
 
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -37,6 +38,9 @@ typedef struct {
     /** The head item. */
     StackItem* head;
 
+    /** The mutex. */
+    pthread_mutex_t* mutex;
+
     /** The tail item. */
     StackItem* tail;
 
@@ -61,10 +65,11 @@ typedef struct {
 /**
  * Initialize a stack.
  *
- * @param stack The stack.
- * @param type  The type.
+ * @param stack       The stack.
+ * @param type        The type.
+ * @param thread_safe Indicates that a mutex will be initialized.
  */
-bool stack_init (Stack* stack, StackType type);
+bool stack_init (Stack* stack, StackType type, bool thread_safe);
 
 /**
  * Create a new stack.
@@ -80,12 +85,28 @@ Stack* stack_new ();
 void* stack_pop (Stack* stack);
 
 /**
+ * Pop data off a stack using thread safety.
+ *
+ * @param stack The stack.
+ * @param data  The data.
+ */
+void* stack_pop_ts (Stack* stack);
+
+/**
  * Push data onto a stack.
  *
  * @param stack The stack.
  * @param data  The data.
  */
 bool stack_push (Stack* stack, void* data);
+
+/**
+ * Push data onto a stack using thread safety.
+ *
+ * @param stack The stack.
+ * @param data  The data.
+ */
+bool stack_push_ts (Stack* stack, void* data);
 
 #ifdef __cplusplus
 }
