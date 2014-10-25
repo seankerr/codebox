@@ -198,6 +198,8 @@ bool table_init_defaults_ts (Table* table);
 /**
  * Initialize a table iterator.
  *
+ * Note: The table must be locked prior to iterating in multithreaded environments.
+ *
  * @param iter  The table iterator.
  * @param table The table.
  */
@@ -206,6 +208,8 @@ void table_iter_init (TableIterator* iter, Table* table);
 /**
  * Retrieve the key for the current table iteration.
  *
+ * Note: The table must be locked prior to iterating in multithreaded environments.
+ *
  * @param iter The table iterator.
  */
 void* table_iter_key (TableIterator* iter);
@@ -213,12 +217,16 @@ void* table_iter_key (TableIterator* iter);
 /**
  * Skip to the next key/value pair.
  *
+ * Note: The table must be locked prior to iterating in multithreaded environments.
+ *
  * @param iter The table iterator.
  */
 bool table_iter_next (TableIterator* iter);
 
 /**
  * Retrieve the value for the current table iteration.
+ *
+ * Note: The table must be locked prior to iterating in multithreaded environments.
  *
  * @param iter The table iterator.
  */
