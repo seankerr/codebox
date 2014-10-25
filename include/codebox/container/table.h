@@ -176,6 +176,7 @@ bool table_init (Table* table, uint32_t bucket_count, float load_factor,
  *   * load_factor  = 0.75
  *   * comp_func    = binary
  *   * hash_func    = djb2
+ *   * thread_safe  = false
  *
  * @param table The hash table.
  */
