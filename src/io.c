@@ -33,7 +33,7 @@ unsigned char* io_file_read (char* path, uint32_t* length) {
 
     fseek(file, 0, SEEK_SET);
 
-    data = (unsigned char*) malloc(sizeof(char) * (*length));
+    data = (unsigned char*) malloc(sizeof(unsigned char) * (*length));
 
     if (NULL == data) {
         *length = 0;
@@ -46,6 +46,7 @@ unsigned char* io_file_read (char* path, uint32_t* length) {
     if (rlength < *length) {
         *length = 0;
 
+        fclose(file);
         free(data);
 
         return NULL;
@@ -81,6 +82,7 @@ char* io_file_read_str (char* path) {
     rlength = fread(data, 1, length, file);
 
     if (rlength < length) {
+        fclose(file);
         free(data);
 
         return NULL;
