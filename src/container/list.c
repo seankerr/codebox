@@ -24,12 +24,12 @@
     } else if (__index < __list->count / 2) { \
         __var = __list->head; \
         for (uint32_t __i = 0; \
-             __i < __list->count && NULL != __var && __i != __index; \
+             __i < __list->count && __i != __index; \
              __i++, __var = __var->next); \
     } else { \
         __var = __list->tail; \
         for (uint32_t __i = 0; \
-             __i < __list->count && NULL != __var && list->count - 1 - __i != __index; \
+             __i < __list->count && list->count - 1 - __i != __index; \
              __i++, __var = __var->prev); \
     }
 
@@ -41,7 +41,7 @@
     } else { \
         __var = __list->head; \
         for (uint32_t __i = 0; \
-             __i < __list->count && NULL != __var && __i != __index; \
+             __i < __list->count && __i != __index; \
              __i++, __var = __var->next); \
     }
 
