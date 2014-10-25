@@ -23,6 +23,13 @@
 #define __GL_DEGREES_TO_RADIANS(__x) (__x * __GL_PI_180_RAD)
 #define __GL_RADIANS_TO_DEGREES(__x) (__x * __GL_180_PI_RAD)
 
+#define __GL_FREE_STATE(__state) \
+    while (NULL != __state) { \
+        next = __state->next; \
+        free(__state); \
+        __state = next; \
+    }
+
 // -------------------------------------------------------------------------------------------------
 // STATIC VARIABLES
 // -------------------------------------------------------------------------------------------------
@@ -31,17 +38,6 @@ static MatrixState** _gl_current_matrix    = NULL;
 static MatrixState*  _gl_matrix_cache      = NULL;
 static MatrixState*  _gl_modelview_matrix  = NULL;
 static MatrixState*  _gl_projection_matrix = NULL;
-
-// -------------------------------------------------------------------------------------------------
-// MACROS
-// -------------------------------------------------------------------------------------------------
-
-#define __GL_FREE_STATE(__state) \
-    while (NULL != __state) { \
-        next = __state->next; \
-        free(__state); \
-        __state = next; \
-    }
 
 // -------------------------------------------------------------------------------------------------
 // FUNCTIONS
