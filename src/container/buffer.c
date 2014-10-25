@@ -63,6 +63,14 @@ bool buffer_append_ts (Buffer* buffer, unsigned char* data, int32_t length) {
     return ret;
 }
 
+bool buffer_append_str (Buffer* buffer, char* data) {
+    return buffer_append(buffer, (unsigned char*) data, strlen((char*) data));
+}
+
+bool buffer_append_str_ts (Buffer* buffer, char* data) {
+    return buffer_append_ts(buffer, (unsigned char*) data, strlen((char*) data));
+}
+
 bool buffer_cleanup (Buffer* buffer) {
     assert(NULL != buffer);
     assert(NULL != buffer->data);

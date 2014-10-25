@@ -59,6 +59,22 @@ bool buffer_append (Buffer* buffer, unsigned char* data, int32_t length);
 bool buffer_append_ts (Buffer* buffer, unsigned char* data, int32_t length);
 
 /**
+ * Append a string onto the end of a buffer.
+ *
+ * @param buffer The buffer.
+ * @param string The string.
+ */
+bool buffer_append_str (Buffer* buffer, char* data);
+
+/**
+ * Append a string onto the end of a buffer using thread safety.
+ *
+ * @param buffer The buffer.
+ * @param string The string.
+ */
+bool buffer_append_str_ts (Buffer* buffer, char* data);
+
+/**
  * Cleanup a buffer.
  *
  * @param buffer The buffer.
