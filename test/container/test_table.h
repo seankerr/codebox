@@ -10,6 +10,7 @@
 #define __TEST_TABLE_H
 
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 

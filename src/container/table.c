@@ -184,6 +184,58 @@ bool table_init_defaults_ts (Table* table) {
                       true);
 }
 
+void table_iter_init (TableIterator* iter, Table* table) {
+    assert(NULL != iter);
+    assert(NULL != table);
+    assert(NULL != table->buckets);
+
+    iter->bucket       = NULL;
+    iter->bucket_index = -1;
+    iter->table        = table;
+}
+
+void* table_iter_key (TableIterator* iter) {
+    assert(NULL != iter);
+    assert(NULL != iter->bucket);
+
+    return iter->bucket->key;
+}
+
+bool table_iter_next (TableIterator* iter) {
+    assert(NULL != iter);
+
+    if (-1 == iter->bucket_index) {
+        iter->bucket       = *iter->table->buckets;
+        iter->bucket_index = 0;
+    } else if (NULL == iter->bucket) {
+        return false;
+    } else {
+        iter->bucket = iter->bucket->next;
+    }
+
+    if (NULL == iter->bucket) {
+        // advance to next non-empty bucket
+        for (;
+             NULL == iter->bucket && iter->bucket_index < iter->table->bucket_count;
+             iter->bucket_index++) {
+            iter->bucket = *(iter->table->buckets + iter->bucket_index);
+        }
+
+        if (NULL == iter->bucket) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void* table_iter_value (TableIterator* iter) {
+    assert(NULL != iter);
+    assert(NULL != iter->bucket);
+
+    return iter->bucket->value;
+}
+
 uint32_t table_key_count (Table* table) {
     assert(NULL != table);
 

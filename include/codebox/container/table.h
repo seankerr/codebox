@@ -66,6 +66,17 @@ typedef struct {
     uint32_t resize_count;
 } Table;
 
+typedef struct {
+    /** The current bucket. */
+    Bucket* bucket;
+
+    /** The table. */
+    Table* table;
+
+    /** The current bucket index. */
+    uint32_t bucket_index;
+} TableIterator;
+
 // -------------------------------------------------------------------------------------------------
 // MACROS
 // -------------------------------------------------------------------------------------------------
@@ -183,6 +194,35 @@ bool table_init_defaults (Table* table);
  * @param table The hash table.
  */
 bool table_init_defaults_ts (Table* table);
+
+/**
+ * Initialize a table iterator.
+ *
+ * @param iter  The table iterator.
+ * @param table The table.
+ */
+void table_iter_init (TableIterator* iter, Table* table);
+
+/**
+ * Retrieve the key for the current table iteration.
+ *
+ * @param iter The table iterator.
+ */
+void* table_iter_key (TableIterator* iter);
+
+/**
+ * Skip to the next key/value pair.
+ *
+ * @param iter The table iterator.
+ */
+bool table_iter_next (TableIterator* iter);
+
+/**
+ * Retrieve the value for the current table iteration.
+ *
+ * @param iter The table iterator.
+ */
+void* table_iter_value (TableIterator* iter);
 
 /**
  * Retrieve the count of keys in a table.
