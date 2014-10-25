@@ -88,6 +88,22 @@ void* list_get (List* list, uint32_t index);
 void* list_get_ts (List* list, uint32_t index);
 
 /**
+ * Retrieve an item from a list.
+ *
+ * @param list  The list.
+ * @param index The index.
+ */
+ListItem* list_get_item (List* list, uint32_t index);
+
+/**
+ * Retrieve an item from a list using thread safety.
+ *
+ * @param list  The list.
+ * @param index The index.
+ */
+ListItem* list_get_item_ts (List* list, uint32_t index);
+
+/**
  * Retrieve the head of a list.
  *
  * @param list The list.
@@ -100,6 +116,20 @@ void* list_head (List* list);
  * @param list The list.
  */
 void* list_head_ts (List* list);
+
+/**
+ * Retrieve the head item of a list.
+ *
+ * @param list The list.
+ */
+ListItem* list_head_item (List* list);
+
+/**
+ * Retrieve the head item of a list using thread safety.
+ *
+ * @param list The list.
+ */
+ListItem* list_head_item_ts (List* list);
 
 /**
  * Initialize a list.
@@ -228,6 +258,20 @@ void* list_tail (List* list);
  * @param list The list.
  */
 void* list_tail_ts (List* list);
+
+/**
+ * Retrieve the tail item of a list.
+ *
+ * @param list The list.
+ */
+ListItem* list_tail_item (List* list);
+
+/**
+ * Retrieve the tail item of a list using thread safety.
+ *
+ * @param list The list.
+ */
+ListItem* list_tail_item_ts (List* list);
 
 /**
  * Unlock a list if it was initialized as thread-safe.

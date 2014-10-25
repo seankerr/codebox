@@ -90,6 +90,30 @@ void* list_get_ts (List* list, uint32_t index) {
     return ret;
 }
 
+ListItem* list_get_item (List* list, uint32_t index) {
+    assert(NULL != list);
+    assert(0 < list->count);
+
+    ListItem* item = NULL;
+
+    __LIST_FIND(item, list, index);
+
+    return item;
+}
+
+ListItem* list_get_item_ts (List* list, uint32_t index) {
+    assert(NULL != list);
+    assert(NULL != list->mutex);
+
+    pthread_mutex_lock(list->mutex);
+
+    ListItem* ret = list_get_item(list, index);
+
+    pthread_mutex_unlock(list->mutex);
+
+    return ret;
+}
+
 void* list_head (List* list) {
     assert(NULL != list);
     assert(NULL != list->head);
@@ -105,6 +129,25 @@ void* list_head_ts (List* list) {
     pthread_mutex_lock(list->mutex);
 
     void* ret = list->head->data;
+
+    pthread_mutex_unlock(list->mutex);
+
+    return ret;
+}
+
+ListItem* list_head_item (List* list) {
+    assert(NULL != list);
+
+    return list->head;
+}
+
+ListItem* list_head_item_ts (List* list) {
+    assert(NULL != list);
+    assert(NULL != list->mutex);
+
+    pthread_mutex_lock(list->mutex);
+
+    ListItem* ret = list->head;
 
     pthread_mutex_unlock(list->mutex);
 
@@ -396,6 +439,25 @@ void* list_tail_ts (List* list) {
     pthread_mutex_lock(list->mutex);
 
     void* ret = list->tail->data;
+
+    pthread_mutex_unlock(list->mutex);
+
+    return ret;
+}
+
+ListItem* list_tail_item (List* list) {
+    assert(NULL != list);
+
+    return list->tail;
+}
+
+ListItem* list_tail_item_ts (List* list) {
+    assert(NULL != list);
+    assert(NULL != list->mutex);
+
+    pthread_mutex_lock(list->mutex);
+
+    ListItem* ret = list->tail;
 
     pthread_mutex_unlock(list->mutex);
 
