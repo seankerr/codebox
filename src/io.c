@@ -38,6 +38,8 @@ unsigned char* io_file_read (char* path, uint32_t* length) {
     if (NULL == data) {
         *length = 0;
 
+        fclose(file);
+
         return NULL;
     }
 
@@ -76,6 +78,8 @@ char* io_file_read_str (char* path) {
     data = (char*) malloc(sizeof(char) * length + 1);
 
     if (NULL == data) {
+        fclose(file);
+
         return NULL;
     }
 
