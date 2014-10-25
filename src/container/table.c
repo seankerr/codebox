@@ -375,7 +375,9 @@ bool table_resize (Table* table, uint32_t bucket_count) {
     Bucket*  old_bucket  = *(table->buckets);
     Bucket** new_bucket  = NULL;
 
-    for (uint32_t i = 0; i < table->bucket_count; old_bucket = *(table->buckets + (++i))) {
+    for (uint32_t i = 0; i < table->bucket_count; i++) {
+        old_bucket = *(table->buckets + i);
+
         while (NULL != old_bucket) {
             new_bucket = buckets + (old_bucket->hashcode % bucket_count);
 
