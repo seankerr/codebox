@@ -75,18 +75,6 @@ typedef struct {
 #define __TABLE_DEFAULT_HASH_FUNC    hash_djb2
 #define __TABLE_DEFAULT_LOAD_FACTOR  0.75
 
-#define table_get_str(__table, __key) \
-        table_get(__table, (unsigned char*) __key, strlen(__key))
-
-#define table_has_key_str(__table, __key) \
-        table_has_key(__table, (unsigned char*) __key, strlen(__key))
-
-#define table_put_str(__table, __key, __value) \
-        table_put(__table, (unsigned char*) __key, strlen(__key), __value)
-
-#define table_remove_str(__table, __key) \
-        table_remove(__table, (unsigned char*) __key, strlen(__key))
-
 // -------------------------------------------------------------------------------------------------
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
@@ -195,6 +183,20 @@ bool table_init_defaults (Table* table);
  * @param table The hash table.
  */
 bool table_init_defaults_ts (Table* table);
+
+/**
+ * Retrieve the count of keys in a table.
+ *
+ * @param table The table.
+ */
+uint32_t table_key_count (Table* table);
+
+/**
+ * Retrieve the count of keys in a table using thread safety.
+ *
+ * @param table The table.
+ */
+uint32_t table_key_count_ts (Table* table);
 
 /**
  * Lock a table if it was initialized as thread-safe.

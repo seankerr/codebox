@@ -16,6 +16,22 @@
 #include "codebox/container/table.h"
 
 // -------------------------------------------------------------------------------------------------
+// MACROS
+// -------------------------------------------------------------------------------------------------
+
+#define table_get_str(__table, __key) \
+        table_get(__table, (unsigned char*) __key, strlen(__key))
+
+#define table_has_key_str(__table, __key) \
+        table_has_key(__table, (unsigned char*) __key, strlen(__key))
+
+#define table_put_str(__table, __key, __value) \
+        table_put(__table, (unsigned char*) __key, strlen(__key), __value)
+
+#define table_remove_str(__table, __key) \
+        table_remove(__table, (unsigned char*) __key, strlen(__key))
+
+// -------------------------------------------------------------------------------------------------
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 

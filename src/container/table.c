@@ -184,6 +184,25 @@ bool table_init_defaults_ts (Table* table) {
                       true);
 }
 
+uint32_t table_key_count (Table* table) {
+    assert(NULL != table);
+
+    return table->key_count;
+}
+
+uint32_t table_key_count_ts (Table* table) {
+    assert(NULL != table);
+    assert(NULL != table->mutex);
+
+    pthread_mutex_lock(table->mutex);
+
+    uint32_t ret = table->key_count;
+
+    pthread_mutex_unlock(table->mutex);
+
+    return ret;
+}
+
 void table_lock (Table* table) {
     assert(NULL != table);
     assert(NULL != table->mutex);

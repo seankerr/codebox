@@ -22,6 +22,22 @@ static uint8_t __BUFFER_CHUNK_SIZE = sizeof(char*) > sizeof(int32_t)
                                      ? sizeof(char*) : sizeof(int32_t);
 
 // -------------------------------------------------------------------------------------------------
+// MACROS
+// -------------------------------------------------------------------------------------------------
+
+#define buffer_append_str(__buffer, __data) \
+    buffer_append(__buffer, (unsigned char*) __data, strlen(__data))
+
+#define buffer_get_str(__buffer) \
+    ((char*) __buffer->data)
+
+#define buffer_indexof_str(__buffer, __data) \
+    buffer_indexof(__buffer, (unsigned char*) __data, strlen(__data))
+
+#define buffer_insert_str(__buffer, __index, __data) \
+    buffer_insert(__buffer, __index, (unsigned char*)  __data, strlen(__data))
+
+// -------------------------------------------------------------------------------------------------
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 

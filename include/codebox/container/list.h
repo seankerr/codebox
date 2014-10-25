@@ -47,34 +47,6 @@ typedef struct {
 } List;
 
 // -------------------------------------------------------------------------------------------------
-// MACROS
-// -------------------------------------------------------------------------------------------------
-
-#define list_head(__list) \
-    __list->head->data
-
-#define list_head_str(__list) \
-    ((char *) __list->head->data)
-
-#define list_get_str(__list, __index) \
-    ((char *) list_get(__list, __index))
-
-#define list_pop_head_str(__list) \
-    ((char *) list_pop_head(__list))
-
-#define list_pop_tail_str(__list) \
-    ((char *) list_pop_tail(__list))
-
-#define list_remove_str(__list, __index) \
-    ((char *) list_remove(__list, __index))
-
-#define list_tail(__list) \
-    __list->tail->data
-
-#define list_tail_str(__list) \
-    ((char *) __list->tail->data)
-
-// -------------------------------------------------------------------------------------------------
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 
@@ -84,6 +56,20 @@ typedef struct {
  * @param list The list.
  */
 bool list_cleanup (List* list);
+
+/**
+ * Retrieve the count of items in a list.
+ *
+ * @param list The list.
+ */
+uint32_t list_count (List* list);
+
+/**
+ * Retrieve the count of items in a list using thread safety.
+ *
+ * @param list The list.
+ */
+uint32_t list_count_ts (List* list);
 
 /**
  * Retrieve data from a list.
@@ -100,6 +86,20 @@ void* list_get (List* list, uint32_t index);
  * @param index The index.
  */
 void* list_get_ts (List* list, uint32_t index);
+
+/**
+ * Retrieve the head of a list.
+ *
+ * @param list The list.
+ */
+void* list_head (List* list);
+
+/**
+ * Retrieve the head of a list using thread safety.
+ *
+ * @param list The list.
+ */
+void* list_head_ts (List* list);
 
 /**
  * Initialize a list.
@@ -214,6 +214,20 @@ void* list_remove (List* list, uint32_t index);
  * @param index The index.
  */
 void* list_remove_ts (List* list, uint32_t index);
+
+/**
+ * Retrieve the tail of a list.
+ *
+ * @param list The list.
+ */
+void* list_tail (List* list);
+
+/**
+ * Retrieve the tail of a list using thread safety.
+ *
+ * @param list The list.
+ */
+void* list_tail_ts (List* list);
 
 /**
  * Unlock a list if it was initialized as thread-safe.

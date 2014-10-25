@@ -52,13 +52,6 @@ typedef struct {
 } Stack;
 
 // -------------------------------------------------------------------------------------------------
-// MACROS
-// -------------------------------------------------------------------------------------------------
-
-#define stack_pop_str(__stack) \
-        (char*) stack_pop(__stack)
-
-// -------------------------------------------------------------------------------------------------
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 
@@ -68,6 +61,34 @@ typedef struct {
  * @param stack The stack.
  */
 bool stack_cleanup (Stack* stack);
+
+/**
+ * Retrieve the count of items in a stack.
+ *
+ * @param stack The stack.
+ */
+uint32_t stack_count (Stack* stack);
+
+/**
+ * Retrieve the count of items in a stack using thread safety.
+ *
+ * @param stack The stack.
+ */
+uint32_t stack_count_ts (Stack* stack);
+
+/**
+ * Retrieve the head of a stack.
+ *
+ * @param stack The stack.
+ */
+void* stack_head (Stack* stack);
+
+/**
+ * Retrieve the head of a stack using thread safety.
+ *
+ * @param stack The stack.
+ */
+void* stack_head_ts (Stack* stack);
 
 /**
  * Initialize a stack.
@@ -121,6 +142,20 @@ bool stack_push (Stack* stack, void* data);
  * @param data  The data.
  */
 bool stack_push_ts (Stack* stack, void* data);
+
+/**
+ * Retrieve the tail of a stack.
+ *
+ * @param stack The stack.
+ */
+void* stack_tail (Stack* stack);
+
+/**
+ * Retrieve the tail of a stack using thread safety.
+ *
+ * @param stack The stack.
+ */
+void* stack_tail_ts (Stack* stack);
 
 /**
  * Unlock a stack if it was initialized as thread-safe.

@@ -15,6 +15,28 @@
 #include "codebox/container/list.h"
 
 // -------------------------------------------------------------------------------------------------
+// MACROS
+// -------------------------------------------------------------------------------------------------
+
+#define list_head_str(__list) \
+    ((char *) __list->head->data)
+
+#define list_get_str(__list, __index) \
+    ((char *) list_get(__list, __index))
+
+#define list_pop_head_str(__list) \
+    ((char *) list_pop_head(__list))
+
+#define list_pop_tail_str(__list) \
+    ((char *) list_pop_tail(__list))
+
+#define list_remove_str(__list, __index) \
+    ((char *) list_remove(__list, __index))
+
+#define list_tail_str(__list) \
+    ((char *) __list->tail->data)
+
+// -------------------------------------------------------------------------------------------------
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 

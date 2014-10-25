@@ -37,22 +37,6 @@ typedef struct {
 } Buffer;
 
 // -------------------------------------------------------------------------------------------------
-// MACROS
-// -------------------------------------------------------------------------------------------------
-
-#define buffer_append_str(__buffer, __data) \
-    buffer_append(__buffer, (unsigned char*) __data, strlen(__data))
-
-#define buffer_get_str(__buffer) \
-    ((char*) __buffer->data)
-
-#define buffer_indexof_str(__buffer, __data) \
-    buffer_indexof(__buffer, (unsigned char*) __data, strlen(__data))
-
-#define buffer_insert_str(__buffer, __index, __data) \
-    buffer_insert(__buffer, __index, (unsigned char*)  __data, strlen(__data))
-
-// -------------------------------------------------------------------------------------------------
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 
@@ -98,6 +82,20 @@ Buffer* buffer_copy (Buffer* buffer, int32_t start, int32_t length);
  * @param length The length.
  */
 Buffer* buffer_copy_ts (Buffer* buffer, int32_t start, int32_t length);
+
+/**
+ * Retrieve the data in a buffer.
+ *
+ * @param buffer The buffer.
+ */
+void* buffer_data (Buffer* buffer);
+
+/**
+ * Retrieve the data in a buffer using thread safety.
+ *
+ * @param buffer The buffer.
+ */
+void* buffer_data_ts (Buffer* buffer);
 
 /**
  * Find the starting index of data in a buffer.
@@ -147,6 +145,20 @@ bool buffer_insert (Buffer* buffer, int32_t index, unsigned char* data, int32_t 
 bool buffer_insert_ts (Buffer* buffer, int32_t index, unsigned char* data, int32_t length);
 
 /**
+ * Retrieve the length of data in a buffer.
+ *
+ * @param buffer The buffer.
+ */
+int32_t buffer_length (Buffer* buffer);
+
+/**
+ * Retrieve the length of data in a buffer using thread safety.
+ *
+ * @param buffer The buffer.
+ */
+int32_t buffer_length_ts (Buffer* buffer);
+
+/**
  * Lock a buffer if it was initialized as thread-safe.
  *
  * @param buffer The buffer.
@@ -191,6 +203,20 @@ bool buffer_resize (Buffer* buffer, int32_t size);
  * @param size   The expected size.
  */
 bool buffer_resize_ts (Buffer* buffer, int32_t size);
+
+/**
+ * Retrieve the size of a buffer.
+ *
+ * @param buffer The buffer.
+ */
+int32_t buffer_size (Buffer* buffer);
+
+/**
+ * Retrieve the size of a buffer using thread safety.
+ *
+ * @param buffer The buffer.
+ */
+int32_t buffer_size_ts (Buffer* buffer);
 
 /**
  * Truncate a buffer.
