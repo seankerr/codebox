@@ -42,7 +42,7 @@ static uint32_t primes[26] = { 53, 97, 193, 389, 769, 1543, 3079, 6151, 12289, 2
 // -------------------------------------------------------------------------------------------------
 
 bool compare_binary (unsigned char* key1, uint32_t length1,
-                       unsigned char* key2, uint32_t length2) {
+                     unsigned char* key2, uint32_t length2) {
     for (int i = 0; i < length1 && i < length2; i++, key1++, key2++) {
         if (*key1 != *key2) {
             return false;
@@ -298,7 +298,7 @@ bool table_put (Table* table, unsigned char* key, uint32_t length, void* value) 
     (*bucket)->length   = length;
     (*bucket)->hashcode = hash;
     (*bucket)->next     = NULL;
-    (*bucket)->value    = (void*) value;
+    (*bucket)->value    = value;
 
     table->key_count++;
 
