@@ -117,19 +117,21 @@ void* buffer_data_ts (Buffer* buffer);
  * Find the starting index of data in a buffer.
  *
  * @param buffer The buffer.
+ * @param start  The start index.
  * @param data   The data.
  * @param length The length of the data.
  */
-int32_t buffer_indexof (Buffer* buffer, unsigned char* data, int32_t length);
+int32_t buffer_indexof (Buffer* buffer, int32_t start, unsigned char* data, int32_t length);
 
 /**
  * Find the starting index of data in a buffer using thread safety.
  *
  * @param buffer The buffer.
+ * @param start  The start index.
  * @param data   The data.
  * @param length The length of the data.
  */
-int32_t buffer_indexof_ts (Buffer* buffer, unsigned char* data, int32_t length);
+int32_t buffer_indexof_ts (Buffer* buffer, int32_t start, unsigned char* data, int32_t length);
 
 /**
  * Initialize a buffer.
