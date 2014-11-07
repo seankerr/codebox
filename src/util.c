@@ -72,3 +72,17 @@ void token_cleanup (Token* token) {
         token = next;
     }
 }
+
+uint32_t token_count (Token* token) {
+    assert(NULL != token);
+
+    uint32_t count = 0;
+
+    while (NULL != token) {
+        count++;
+
+        token = token->next;
+    }
+
+    return count;
+}

@@ -27,6 +27,7 @@ void test_util () {
     Token* first = t;
 
     assert(NULL != t);
+    assert(9 == token_count(t));
     assert(3 == t->length);
     assert(0 == strncmp("The", (char*) t->data, t->length));
 
@@ -81,16 +82,15 @@ void test_util () {
     t = t->next;
 
     assert(NULL == t);
-
     token_cleanup(first);
 
     t = split((unsigned char*) "The | quick | brown | fox | jumped | over | the | lazy | dog",
               60, (unsigned char*) "XXX", 3);
 
     assert(NULL != t);
+    assert(1 == token_count(t));
     assert(60 == t->length);
     assert(0 == strncmp("The | quick | brown | fox | jumped | over | the | lazy | dog",
                         (char*) t->data, t->length));
-
     token_cleanup(t);
 }

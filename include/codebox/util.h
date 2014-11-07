@@ -52,4 +52,11 @@ Token* split (unsigned char* data, uint32_t data_length, unsigned char* delimite
  */
 void token_cleanup (Token* token);
 
+/**
+ * Retrieve a count of tokens.
+ *
+ * @param token The initial token.
+ */
+uint32_t token_count (Token* token);
+
 #endif
