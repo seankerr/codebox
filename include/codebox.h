@@ -15,6 +15,7 @@
 #include "codebox/container/table.h"
 #include "codebox/gl.h"
 #include "codebox/io.h"
+#include "codebox/util.h"
 
 // -------------------------------------------------------------------------------------------------
 // MACROS
