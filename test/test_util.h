@@ -22,7 +22,14 @@
 // -------------------------------------------------------------------------------------------------
 
 void test_util () {
-    Token* t = split((unsigned char*) "The | quick | brown | fox | jumped | over | the | lazy | dog",
+    assert(6 == indexof((unsigned char*)"Hello, world", 12, 0, (unsigned char*)" ", 1));
+    assert(2 == indexof((unsigned char*)"Hello, world", 12, 0, (unsigned char*)"l", 1));
+    assert(3 == indexof((unsigned char*)"Hello, world", 12, 3, (unsigned char*)"l", 1));
+    assert(7 == indexof((unsigned char*)"Hello, world", 12, 0, (unsigned char*)"world", 5));
+    assert(-1 == indexof((unsigned char*)"Hello, world", 12, 0, (unsigned char*)"World", 5));
+    assert(12 == indexof((unsigned char*)"Hello, world ", 13, 7, (unsigned char*)" ", 1));
+
+    Token* t = split((unsigned char*) "The | quick | brown | fox | jumped | over | the | lazy | dog | ",
                      60, (unsigned char*) " | ", 3);
     Token* first = t;
 

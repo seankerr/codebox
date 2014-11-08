@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "codebox/container/buffer.h"
+#include "codebox/util.h"
 
 // -------------------------------------------------------------------------------------------------
 // MACROS
@@ -142,33 +143,19 @@ void* buffer_data_ts (Buffer* buffer) {
     return ret;
 }
 
-int32_t buffer_indexof (Buffer* buffer, int32_t start, unsigned char* data, int32_t length) {
+int32_t buffer_indexof (Buffer* buffer, int32_t start, unsigned char* sequence, int32_t length) {
     assert(NULL != buffer);
-    assert(NULL != buffer->data);
-    assert(NULL != data);
-    assert(0 <= start);
-    assert(0 < length);
 
-    for (int32_t i = start, s = 0; i < buffer->length; i++) {
-        if (*(buffer->data + i) == *(((unsigned char*) data) + s)) {
-            if (++s == length) {
-                return i - (length - 1);
-            }
-        } else {
-            s = 0;
-        }
-    }
-
-    return -1;
+    return indexof(buffer->data, buffer->length, start, sequence, length);
 }
 
-int32_t buffer_indexof_ts (Buffer* buffer, int32_t start, unsigned char* data, int32_t length) {
+int32_t buffer_indexof_ts (Buffer* buffer, int32_t start, unsigned char* sequence, int32_t length) {
     assert(NULL != buffer);
     assert(NULL != buffer->mutex);
 
     pthread_mutex_lock(buffer->mutex);
 
-    int32_t ret = buffer_indexof(buffer, start, data, length);
+    int32_t ret = indexof(buffer->data, buffer->length, start, sequence, length);
 
     pthread_mutex_unlock(buffer->mutex);
 

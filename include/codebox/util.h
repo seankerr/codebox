@@ -35,6 +35,18 @@ typedef struct __token {
 // -------------------------------------------------------------------------------------------------
 
 /**
+ * Find the position of a character sequence.
+ *
+ * @param data            The data to search.
+ * @param data_length     The length of the data.
+ * @param start           The start position.
+ * @param sequence        The character sequence.
+ * @param sequence_length The length of the character sequence.
+ */
+int32_t indexof (unsigned char* data, int32_t data_length, int32_t start, unsigned char* sequence,
+                 int32_t sequence_length);
+
+/**
  * Split data into tokens.
  *
  * @param data             The data.
@@ -42,8 +54,8 @@ typedef struct __token {
  * @param delimiter        The delimiter.
  * @param delimiter_length The length of the delimiter.
  */
-Token* split (unsigned char* data, uint32_t data_length, unsigned char* delimiter,
-              uint32_t delimiter_length);
+Token* split (unsigned char* data, int32_t data_length, unsigned char* delimiter,
+              int32_t delimiter_length);
 
 /**
  * Cleanup a token.
