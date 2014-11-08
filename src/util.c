@@ -44,15 +44,15 @@ Token* split (unsigned char* data, int32_t data_length, unsigned char* delimiter
     assert(0 < delimiter_length);
     assert(delimiter_length <= data_length);
 
+    Token* token = (Token*) malloc(sizeof(Token));
+
+    if (NULL == token) {
+        return NULL;
+    }
+
     for (int32_t i = 0, s = 0; i < data_length; i++) {
         if (*(data + i) == *(delimiter + s)) {
             if (++s == delimiter_length) {
-                Token* token = (Token*) malloc(sizeof(Token));
-
-                if (NULL == token) {
-                    return NULL;
-                }
-
                 token->data   = data;
                 token->length = ++i - delimiter_length;
                 token->next   = NULL;
@@ -69,12 +69,6 @@ Token* split (unsigned char* data, int32_t data_length, unsigned char* delimiter
     }
 
     // didn't find the delimiter
-    Token* token = (Token*) malloc(sizeof(Token));
-
-    if (NULL == token) {
-        return NULL;
-    }
-
     token->data   = data;
     token->length = data_length;
     token->next   = NULL;
