@@ -55,11 +55,7 @@ Token* split (unsigned char* data, int32_t data_length, unsigned char* delimiter
             if (++s == delimiter_length) {
                 token->data   = data;
                 token->length = ++i - delimiter_length;
-                token->next   = NULL;
-
-                if (i < data_length - 1) {
-                    token->next = split(data + i, data_length - i, delimiter, delimiter_length);
-                }
+                token->next   = split(data + i, data_length - i, delimiter, delimiter_length);
 
                 return token;
             }
