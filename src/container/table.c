@@ -16,7 +16,7 @@
 // MACROS
 // -------------------------------------------------------------------------------------------------
 
-#define __TABLE_FIND(__bucket, __table, __key, __length) \
+#define __TABLE_GET(__bucket, __table, __key, __length) \
     { \
         uint32_t __hash = __table->hash_func(__key, __length); \
         __bucket = *(__table->buckets + (__hash % __table->bucket_count)); \
@@ -82,7 +82,7 @@ void* table_get (Table* table, unsigned char* key, int32_t length) {
 
     Bucket* bucket = NULL;
 
-    __TABLE_FIND(bucket, table, key, length);
+    __TABLE_GET(bucket, table, key, length);
 
     return NULL != bucket ? bucket->value : NULL;
 }
@@ -107,7 +107,7 @@ bool table_has_key (Table* table, unsigned char* key, int32_t length) {
 
     Bucket* bucket = NULL;
 
-    __TABLE_FIND(bucket, table, key, length);
+    __TABLE_GET(bucket, table, key, length);
 
     return NULL != bucket;
 }
