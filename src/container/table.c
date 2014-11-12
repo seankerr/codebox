@@ -43,6 +43,9 @@ static int32_t primes[26] = { 53, 97, 193, 389, 769, 1543, 3079, 6151, 12289, 24
 
 bool compare_binary (unsigned char* key1, int32_t length1,
                      unsigned char* key2, int32_t length2) {
+    assert(0 < length1);
+    assert(0 < length2);
+
     for (int i = 0; i < length1 && i < length2; i++, key1++, key2++) {
         if (*key1 != *key2) {
             return false;
@@ -53,6 +56,8 @@ bool compare_binary (unsigned char* key1, int32_t length1,
 }
 
 uint32_t hash_djb2 (unsigned char* bytes, int32_t length) {
+    assert(0 < length);
+
     uint32_t hash = 5381;
 
     for (int i = 0; i < length; i++, bytes++) {
@@ -319,6 +324,9 @@ bool table_put_ts (Table* table, unsigned char* key, int32_t length, void* value
 }
 
 void* table_remove (Table* table, unsigned char* key, int32_t length) {
+    assert(NULL != table);
+    assert(0 < length);
+
     uint32_t hash   = table->hash_func(key, length);
     Bucket** bucket = table->buckets + (hash % table->bucket_count);
 
@@ -353,6 +361,9 @@ void* table_remove_ts (Table* table, unsigned char* key, int32_t length) {
 }
 
 bool table_resize (Table* table, int32_t bucket_count) {
+    assert(NULL != table);
+    assert(0 < bucket_count);
+
     for (int8_t i = 0, length = sizeof(primes) / sizeof(primes[0]); i < length; i++) {
         if (bucket_count <= primes[i] || i + 1 == length) {
             bucket_count = primes[i];
