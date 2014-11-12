@@ -26,19 +26,19 @@ bool stack_cleanup (Stack* stack) {
     return true;
 }
 
-uint32_t stack_count (Stack* stack) {
+int32_t stack_count (Stack* stack) {
     assert(NULL != stack);
 
     return stack->count;
 }
 
-uint32_t stack_count_ts (Stack* stack) {
+int32_t stack_count_ts (Stack* stack) {
     assert(NULL != stack);
     assert(NULL != stack->mutex);
 
     pthread_mutex_lock(stack->mutex);
 
-    uint32_t ret = stack->count;
+    int32_t ret = stack->count;
 
     pthread_mutex_unlock(stack->mutex);
 

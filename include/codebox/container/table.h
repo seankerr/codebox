@@ -36,16 +36,16 @@ typedef struct __bucket {
     uint32_t hashcode;
 
     /** The key length. */
-    uint32_t length;
+    int32_t length;
 } Bucket;
 
 typedef struct {
     /** The key comparision function. */
-    bool (*comp_func) (unsigned char* key1, uint32_t length1,
-                       unsigned char* key2, uint32_t length2);
+    bool (*comp_func) (unsigned char* key1, int32_t length1,
+                       unsigned char* key2, int32_t length2);
 
     /** The hash function. */
-    uint32_t (*hash_func) (unsigned char* key, uint32_t length);
+    uint32_t (*hash_func) (unsigned char* key, int32_t length);
 
     /** The buckets. */
     Bucket** buckets;
@@ -54,16 +54,16 @@ typedef struct {
     pthread_mutex_t* mutex;
 
     /** The bucket count. */
-    uint32_t bucket_count;
+    int32_t bucket_count;
 
     /** The key count. */
-    uint32_t key_count;
+    int32_t key_count;
 
     /** The resize load factor. */
     float load_factor;
 
     /** The resize count. */
-    uint32_t resize_count;
+    int32_t resize_count;
 } Table;
 
 typedef struct {
@@ -74,7 +74,7 @@ typedef struct {
     Table* table;
 
     /** The current bucket index. */
-    uint32_t bucket_index;
+    int32_t bucket_index;
 } TableIterator;
 
 // -------------------------------------------------------------------------------------------------
@@ -98,8 +98,8 @@ typedef struct {
  * @param key2    The second key.
  * @param length2 The second key length.
  */
-bool compare_binary (unsigned char* key1, uint32_t length1,
-                     unsigned char* key2, uint32_t length2);
+bool compare_binary (unsigned char* key1, int32_t length1,
+                     unsigned char* key2, int32_t length2);
 
 /**
  * The djb2 hash function.
@@ -107,7 +107,7 @@ bool compare_binary (unsigned char* key1, uint32_t length1,
  * @param bytes  The bytes.
  * @param length The length.
  */
-uint32_t hash_djb2 (unsigned char* bytes, uint32_t length);
+uint32_t hash_djb2 (unsigned char* bytes, int32_t length);
 
 /**
  * Cleanup a hash table.
@@ -123,7 +123,7 @@ bool table_cleanup (Table* table);
  * @param key    The key.
  * @param length The key length.
  */
-void* table_get (Table* table, unsigned char* key, uint32_t length);
+void* table_get (Table* table, unsigned char* key, int32_t length);
 
 /**
  * Retrieve a value from a hash table using thread safety.
@@ -132,7 +132,7 @@ void* table_get (Table* table, unsigned char* key, uint32_t length);
  * @param key    The key.
  * @param length The key length.
  */
-void* table_get_ts (Table* table, unsigned char* key, uint32_t length);
+void* table_get_ts (Table* table, unsigned char* key, int32_t length);
 
 /**
  * Indicates whether or not a table contains a key.
@@ -141,7 +141,7 @@ void* table_get_ts (Table* table, unsigned char* key, uint32_t length);
  * @param key    The key.
  * @param length The key length.
  */
-bool table_has_key (Table* table, unsigned char* key, uint32_t length);
+bool table_has_key (Table* table, unsigned char* key, int32_t length);
 
 /**
  * Indicates whether or not a table contains a key using thread safety.
@@ -150,7 +150,7 @@ bool table_has_key (Table* table, unsigned char* key, uint32_t length);
  * @param key    The key.
  * @param length The key length.
  */
-bool table_has_key_ts (Table* table, unsigned char* key, uint32_t length);
+bool table_has_key_ts (Table* table, unsigned char* key, int32_t length);
 
 /**
  * Initialize a hash table.
@@ -162,10 +162,10 @@ bool table_has_key_ts (Table* table, unsigned char* key, uint32_t length);
  * @param hash_func    The hash function.
  * @param thread_safe  Indicates that a mutex will be initialized.
  */
-bool table_init (Table* table, uint32_t bucket_count, float load_factor,
-                 bool (*comp_func) (unsigned char* key1, uint32_t length1,
-                                    unsigned char* key2, uint32_t length2),
-                 uint32_t (*hash_func) (unsigned char* key, uint32_t length),
+bool table_init (Table* table, int32_t bucket_count, float load_factor,
+                 bool (*comp_func) (unsigned char* key1, int32_t length1,
+                                    unsigned char* key2, int32_t length2),
+                 uint32_t (*hash_func) (unsigned char* key, int32_t length),
                  bool thread_safe);
 
 /**
@@ -238,14 +238,14 @@ void* table_iter_value (TableIterator* iter);
  *
  * @param table The table.
  */
-uint32_t table_key_count (Table* table);
+int32_t table_key_count (Table* table);
 
 /**
  * Retrieve the count of keys in a table using thread safety.
  *
  * @param table The table.
  */
-uint32_t table_key_count_ts (Table* table);
+int32_t table_key_count_ts (Table* table);
 
 /**
  * Lock a table if it was initialized as thread-safe.
@@ -267,7 +267,7 @@ Table* table_new ();
  * @param length The key length.
  * @param value  The value.
  */
-bool table_put (Table* table, unsigned char* key, uint32_t length, void* value);
+bool table_put (Table* table, unsigned char* key, int32_t length, void* value);
 
 /**
  * Put an item into a hash table using thread safety.
@@ -277,7 +277,7 @@ bool table_put (Table* table, unsigned char* key, uint32_t length, void* value);
  * @param length The key length.
  * @param value  The value.
  */
-bool table_put_ts (Table* table, unsigned char* key, uint32_t length, void* value);
+bool table_put_ts (Table* table, unsigned char* key, int32_t length, void* value);
 
 /**
  * Remove an item from a hash table.
@@ -286,7 +286,7 @@ bool table_put_ts (Table* table, unsigned char* key, uint32_t length, void* valu
  * @param key    The key.
  * @param length The key length.
  */
-void* table_remove (Table* table, unsigned char* key, uint32_t length);
+void* table_remove (Table* table, unsigned char* key, int32_t length);
 
 /**
  * Remove an item from a hash table using thread safety.
@@ -295,7 +295,7 @@ void* table_remove (Table* table, unsigned char* key, uint32_t length);
  * @param key    The key.
  * @param length The key length.
  */
-void* table_remove_ts (Table* table, unsigned char* key, uint32_t length);
+void* table_remove_ts (Table* table, unsigned char* key, int32_t length);
 
 /**
  * Resize a hash table.
@@ -303,7 +303,7 @@ void* table_remove_ts (Table* table, unsigned char* key, uint32_t length);
  * @param table        The table.
  * @param bucket_count The estimated bucket count.
  */
-bool table_resize (Table* table, uint32_t bucket_count);
+bool table_resize (Table* table, int32_t bucket_count);
 
 /**
  * Resize a hash table using thread safety.
@@ -311,7 +311,7 @@ bool table_resize (Table* table, uint32_t bucket_count);
  * @param table        The table.
  * @param bucket_count The estimated bucket count.
  */
-bool table_resize_ts (Table* table, uint32_t bucket_count);
+bool table_resize_ts (Table* table, int32_t bucket_count);
 
 /**
  * Unlock a table if it was initialized as thread-safe.

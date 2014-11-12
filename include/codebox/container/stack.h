@@ -45,7 +45,7 @@ typedef struct {
     StackItem* tail;
 
     /** The count of items. */
-    uint32_t count;
+    int32_t count;
 
     /** The stack type. */
     StackType type;
@@ -67,14 +67,14 @@ bool stack_cleanup (Stack* stack);
  *
  * @param stack The stack.
  */
-uint32_t stack_count (Stack* stack);
+int32_t stack_count (Stack* stack);
 
 /**
  * Retrieve the count of items in a stack using thread safety.
  *
  * @param stack The stack.
  */
-uint32_t stack_count_ts (Stack* stack);
+int32_t stack_count_ts (Stack* stack);
 
 /**
  * Retrieve the head of a stack.

@@ -32,17 +32,17 @@
 // STATIC VARIABLES
 // -------------------------------------------------------------------------------------------------
 
-static uint32_t primes[26] = { 53, 97, 193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317,
-                               196613, 393241, 786433, 1572869, 3145739, 6291469, 12582917,
-                               25165843, 50331653, 100663319, 201326611, 402653189, 805306457,
-                               1610612741 };
+static int32_t primes[26] = { 53, 97, 193, 389, 769, 1543, 3079, 6151, 12289, 24593, 49157, 98317,
+                              196613, 393241, 786433, 1572869, 3145739, 6291469, 12582917,
+                              25165843, 50331653, 100663319, 201326611, 402653189, 805306457,
+                              1610612741 };
 
 // -------------------------------------------------------------------------------------------------
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
 
-bool compare_binary (unsigned char* key1, uint32_t length1,
-                     unsigned char* key2, uint32_t length2) {
+bool compare_binary (unsigned char* key1, int32_t length1,
+                     unsigned char* key2, int32_t length2) {
     for (int i = 0; i < length1 && i < length2; i++, key1++, key2++) {
         if (*key1 != *key2) {
             return false;
@@ -52,7 +52,7 @@ bool compare_binary (unsigned char* key1, uint32_t length1,
     return true;
 }
 
-uint32_t hash_djb2 (unsigned char* bytes, uint32_t length) {
+uint32_t hash_djb2 (unsigned char* bytes, int32_t length) {
     uint32_t hash = 5381;
 
     for (int i = 0; i < length; i++, bytes++) {
@@ -75,7 +75,7 @@ bool table_cleanup (Table* table) {
     return true;
 }
 
-void* table_get (Table* table, unsigned char* key, uint32_t length) {
+void* table_get (Table* table, unsigned char* key, int32_t length) {
     assert(NULL != table);
     assert(NULL != key);
     assert(0 < length);
@@ -87,7 +87,7 @@ void* table_get (Table* table, unsigned char* key, uint32_t length) {
     return NULL != bucket ? bucket->value : NULL;
 }
 
-void* table_get_ts (Table* table, unsigned char* key, uint32_t length) {
+void* table_get_ts (Table* table, unsigned char* key, int32_t length) {
     assert(NULL != table);
     assert(NULL != table->mutex);
 
@@ -100,7 +100,7 @@ void* table_get_ts (Table* table, unsigned char* key, uint32_t length) {
     return ret;
 }
 
-bool table_has_key (Table* table, unsigned char* key, uint32_t length) {
+bool table_has_key (Table* table, unsigned char* key, int32_t length) {
     assert(NULL != table);
     assert(NULL != key);
     assert(0 < length);
@@ -112,7 +112,7 @@ bool table_has_key (Table* table, unsigned char* key, uint32_t length) {
     return NULL != bucket;
 }
 
-bool table_has_key_ts (Table* table, unsigned char* key, uint32_t length) {
+bool table_has_key_ts (Table* table, unsigned char* key, int32_t length) {
     assert(NULL != table);
     assert(NULL != table->mutex);
 
@@ -125,10 +125,10 @@ bool table_has_key_ts (Table* table, unsigned char* key, uint32_t length) {
     return ret;
 }
 
-bool table_init (Table* table, uint32_t bucket_count, float load_factor,
-                 bool (*comp_func) (unsigned char* key1, uint32_t length1,
-                                    unsigned char* key2, uint32_t length2),
-                 uint32_t (*hash_func) (unsigned char* key, uint32_t length),
+bool table_init (Table* table, int32_t bucket_count, float load_factor,
+                 bool (*comp_func) (unsigned char* key1, int32_t length1,
+                                    unsigned char* key2, int32_t length2),
+                 uint32_t (*hash_func) (unsigned char* key, int32_t length),
                  bool thread_safe) {
     assert(NULL != table);
     assert(NULL == table->buckets);
@@ -155,7 +155,7 @@ bool table_init (Table* table, uint32_t bucket_count, float load_factor,
     table->key_count    = 0;
     table->load_factor  = load_factor;
     table->mutex        = NULL;
-    table->resize_count = (uint32_t) (table->bucket_count * table->load_factor);
+    table->resize_count = (int32_t) (table->bucket_count * table->load_factor);
 
     if (thread_safe) {
         table->mutex = (pthread_mutex_t*) malloc(sizeof(pthread_mutex_t));
@@ -236,19 +236,19 @@ void* table_iter_value (TableIterator* iter) {
     return iter->bucket->value;
 }
 
-uint32_t table_key_count (Table* table) {
+int32_t table_key_count (Table* table) {
     assert(NULL != table);
 
     return table->key_count;
 }
 
-uint32_t table_key_count_ts (Table* table) {
+int32_t table_key_count_ts (Table* table) {
     assert(NULL != table);
     assert(NULL != table->mutex);
 
     pthread_mutex_lock(table->mutex);
 
-    uint32_t ret = table->key_count;
+    int32_t ret = table->key_count;
 
     pthread_mutex_unlock(table->mutex);
 
@@ -274,7 +274,7 @@ Table* table_new () {
     return table;
 }
 
-bool table_put (Table* table, unsigned char* key, uint32_t length, void* value) {
+bool table_put (Table* table, unsigned char* key, int32_t length, void* value) {
     assert(NULL != table);
     assert(NULL != key);
     assert(0 < length);
@@ -305,7 +305,7 @@ bool table_put (Table* table, unsigned char* key, uint32_t length, void* value) 
     return true;
 }
 
-bool table_put_ts (Table* table, unsigned char* key, uint32_t length, void* value) {
+bool table_put_ts (Table* table, unsigned char* key, int32_t length, void* value) {
     assert(NULL != table);
     assert(NULL != table->mutex);
 
@@ -318,7 +318,7 @@ bool table_put_ts (Table* table, unsigned char* key, uint32_t length, void* valu
     return ret;
 }
 
-void* table_remove (Table* table, unsigned char* key, uint32_t length) {
+void* table_remove (Table* table, unsigned char* key, int32_t length) {
     uint32_t hash   = table->hash_func(key, length);
     Bucket** bucket = table->buckets + (hash % table->bucket_count);
 
@@ -339,7 +339,7 @@ void* table_remove (Table* table, unsigned char* key, uint32_t length) {
     return NULL;
 }
 
-void* table_remove_ts (Table* table, unsigned char* key, uint32_t length) {
+void* table_remove_ts (Table* table, unsigned char* key, int32_t length) {
     assert(NULL != table);
     assert(NULL != table->mutex);
 
@@ -352,7 +352,7 @@ void* table_remove_ts (Table* table, unsigned char* key, uint32_t length) {
     return ret;
 }
 
-bool table_resize (Table* table, uint32_t bucket_count) {
+bool table_resize (Table* table, int32_t bucket_count) {
     for (int8_t i = 0, length = sizeof(primes) / sizeof(primes[0]); i < length; i++) {
         if (bucket_count <= primes[i] || i + 1 == length) {
             bucket_count = primes[i];
@@ -375,7 +375,7 @@ bool table_resize (Table* table, uint32_t bucket_count) {
     Bucket*  old_bucket  = *(table->buckets);
     Bucket** new_bucket  = NULL;
 
-    for (uint32_t i = 0; i < table->bucket_count; i++) {
+    for (int32_t i = 0; i < table->bucket_count; i++) {
         old_bucket = *(table->buckets + i);
 
         while (NULL != old_bucket) {
@@ -393,12 +393,12 @@ bool table_resize (Table* table, uint32_t bucket_count) {
 
     table->buckets      = buckets;
     table->bucket_count = bucket_count;
-    table->resize_count = (uint32_t) (table->bucket_count * table->load_factor);
+    table->resize_count = (int32_t) (table->bucket_count * table->load_factor);
 
     return true;
 }
 
-bool table_resize_ts (Table* table, uint32_t bucket_count) {
+bool table_resize_ts (Table* table, int32_t bucket_count) {
     assert(NULL != table);
     assert(NULL != table->mutex);
 
