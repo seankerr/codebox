@@ -152,7 +152,7 @@ void test_dlist () {
     assert(!strcmp(dlist_pop_tail_str(l), "Item1"));
     assert(0 == l->count);
 
-    // insert and remove
+    // insert, find and remove
     assert(dlist_insert(l, 0, "Item1"));
     assert(1 == l->count);
     assert(NULL != l->head);
@@ -198,6 +198,15 @@ void test_dlist () {
     assert(NULL != l->head);
     assert(NULL != l->tail);
     assert(l->head != l->tail);
+    assert(0 == dlist_find(l, "Item1"));
+    assert(1 == dlist_find(l, "Item2"));
+    assert(2 == dlist_find(l, "Item3"));
+    assert(3 == dlist_find(l, "Item4"));
+    assert(4 == dlist_find(l, "Item5"));
+    assert(5 == dlist_find(l, "Item6"));
+    assert(6 == dlist_find(l, "Item7"));
+    assert(7 == dlist_find(l, "Item8"));
+    assert(8 == dlist_find(l, "Item9"));
     assert(!strcmp(dlist_remove_str(l, 4), "Item5"));
     assert(8 == l->count);
     assert(NULL != l->head);
@@ -333,7 +342,7 @@ void test_slist () {
     assert(!strcmp(list_pop_tail_str(l), "Item1"));
     assert(0 == l->count);
 
-    // insert and remove
+    // insert, find and remove
     assert(list_insert(l, 0, "Item1"));
     assert(1 == l->count);
     assert(NULL != l->head);
@@ -379,6 +388,15 @@ void test_slist () {
     assert(NULL != l->head);
     assert(NULL != l->tail);
     assert(l->head != l->tail);
+    assert(0 == list_find(l, "Item1"));
+    assert(1 == list_find(l, "Item2"));
+    assert(2 == list_find(l, "Item3"));
+    assert(3 == list_find(l, "Item4"));
+    assert(4 == list_find(l, "Item5"));
+    assert(5 == list_find(l, "Item6"));
+    assert(6 == list_find(l, "Item7"));
+    assert(7 == list_find(l, "Item8"));
+    assert(8 == list_find(l, "Item9"));
     assert(!strcmp(list_remove_str(l, 4), "Item5"));
     assert(8 == l->count);
     assert(NULL != l->head);

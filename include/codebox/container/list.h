@@ -43,7 +43,7 @@ typedef struct {
     DListItem* tail;
 
     /** The count of items. */
-    uint32_t count;
+    int32_t count;
 } DList;
 
 typedef struct __list_item {
@@ -65,7 +65,7 @@ typedef struct {
     ListItem* tail;
 
     /** The count of items. */
-    uint32_t count;
+    int32_t count;
 } List;
 
 // -------------------------------------------------------------------------------------------------
@@ -84,14 +84,30 @@ bool dlist_cleanup (DList* list);
  *
  * @param list The list.
  */
-uint32_t dlist_count (DList* list);
+int32_t dlist_count (DList* list);
 
 /**
  * Retrieve the count of items in a list using thread safety.
  *
  * @param list The list.
  */
-uint32_t dlist_count_ts (DList* list);
+int32_t dlist_count_ts (DList* list);
+
+/**
+ * Find the index for a value.
+ *
+ * @param list The list.
+ * @param data The value.
+ */
+int32_t dlist_find (DList* list, void* data);
+
+/**
+ * Find the index for a value using thread safety.
+ *
+ * @param list The list.
+ * @param data The value.
+ */
+int32_t dlist_find_ts (DList* list, void* data);
 
 /**
  * Retrieve data from a list.
@@ -99,7 +115,7 @@ uint32_t dlist_count_ts (DList* list);
  * @param list  The list.
  * @param index The index.
  */
-void* dlist_get (DList* list, uint32_t index);
+void* dlist_get (DList* list, int32_t index);
 
 /**
  * Retrieve data from a list using thread safety.
@@ -107,7 +123,7 @@ void* dlist_get (DList* list, uint32_t index);
  * @param list  The list.
  * @param index The index.
  */
-void* dlist_get_ts (DList* list, uint32_t index);
+void* dlist_get_ts (DList* list, int32_t index);
 
 /**
  * Retrieve an item from a list.
@@ -115,7 +131,7 @@ void* dlist_get_ts (DList* list, uint32_t index);
  * @param list  The list.
  * @param index The index.
  */
-DListItem* dlist_get_item (DList* list, uint32_t index);
+DListItem* dlist_get_item (DList* list, int32_t index);
 
 /**
  * Retrieve an item from a list using thread safety.
@@ -123,7 +139,7 @@ DListItem* dlist_get_item (DList* list, uint32_t index);
  * @param list  The list.
  * @param index The index.
  */
-DListItem* dlist_get_item_ts (DList* list, uint32_t index);
+DListItem* dlist_get_item_ts (DList* list, int32_t index);
 
 /**
  * Retrieve the head of a list.
@@ -168,7 +184,7 @@ bool dlist_init (DList* list, bool thread_safe);
  * @param index The index.
  * @param data  The data.
  */
-bool dlist_insert (DList* list, uint32_t index, void* data);
+bool dlist_insert (DList* list, int32_t index, void* data);
 
 /**
  * Insert data into a list using thread safety.
@@ -177,7 +193,7 @@ bool dlist_insert (DList* list, uint32_t index, void* data);
  * @param index The index.
  * @param data  The data.
  */
-bool dlist_insert_ts (DList* list, uint32_t index, void* data);
+bool dlist_insert_ts (DList* list, int32_t index, void* data);
 
 /**
  * Lock a list if it was initialized as thread-safe.
@@ -257,7 +273,7 @@ bool dlist_push_tail_ts (DList* list, void* data);
  * @param list  The list.
  * @param index The index.
  */
-void* dlist_remove (DList* list, uint32_t index);
+void* dlist_remove (DList* list, int32_t index);
 
 /**
  * Remove data from a list using thread safety.
@@ -265,7 +281,7 @@ void* dlist_remove (DList* list, uint32_t index);
  * @param list  The list.
  * @param index The index.
  */
-void* dlist_remove_ts (DList* list, uint32_t index);
+void* dlist_remove_ts (DList* list, int32_t index);
 
 /**
  * Retrieve the tail of a list.
@@ -318,14 +334,30 @@ bool list_cleanup (List* list);
  *
  * @param list The list.
  */
-uint32_t list_count (List* list);
+int32_t list_count (List* list);
 
 /**
  * Retrieve the count of items in a list using thread safety.
  *
  * @param list The list.
  */
-uint32_t list_count_ts (List* list);
+int32_t list_count_ts (List* list);
+
+/**
+ * Find the index for a value.
+ *
+ * @param list The list.
+ * @param data The value.
+ */
+int32_t list_find (List* list, void* data);
+
+/**
+ * Find the index for a value using thread safety.
+ *
+ * @param list The list.
+ * @param data The value.
+ */
+int32_t list_find_ts (List* list, void* data);
 
 /**
  * Retrieve data from a list.
@@ -333,7 +365,7 @@ uint32_t list_count_ts (List* list);
  * @param list  The list.
  * @param index The index.
  */
-void* list_get (List* list, uint32_t index);
+void* list_get (List* list, int32_t index);
 
 /**
  * Retrieve data from a list using thread safety.
@@ -341,7 +373,7 @@ void* list_get (List* list, uint32_t index);
  * @param list  The list.
  * @param index The index.
  */
-void* list_get_ts (List* list, uint32_t index);
+void* list_get_ts (List* list, int32_t index);
 
 /**
  * Retrieve an item from a list.
@@ -349,7 +381,7 @@ void* list_get_ts (List* list, uint32_t index);
  * @param list  The list.
  * @param index The index.
  */
-ListItem* list_get_item (List* list, uint32_t index);
+ListItem* list_get_item (List* list, int32_t index);
 
 /**
  * Retrieve an item from a list using thread safety.
@@ -357,7 +389,7 @@ ListItem* list_get_item (List* list, uint32_t index);
  * @param list  The list.
  * @param index The index.
  */
-ListItem* list_get_item_ts (List* list, uint32_t index);
+ListItem* list_get_item_ts (List* list, int32_t index);
 
 /**
  * Retrieve the head of a list.
@@ -402,7 +434,7 @@ bool list_init (List* list, bool thread_safe);
  * @param index The index.
  * @param data  The data.
  */
-bool list_insert (List* list, uint32_t index, void* data);
+bool list_insert (List* list, int32_t index, void* data);
 
 /**
  * Insert data into a list using thread safety.
@@ -411,7 +443,7 @@ bool list_insert (List* list, uint32_t index, void* data);
  * @param index The index.
  * @param data  The data.
  */
-bool list_insert_ts (List* list, uint32_t index, void* data);
+bool list_insert_ts (List* list, int32_t index, void* data);
 
 /**
  * Lock a list if it was initialized as thread-safe.
@@ -491,7 +523,7 @@ bool list_push_tail_ts (List* list, void* data);
  * @param list  The list.
  * @param index The index.
  */
-void* list_remove (List* list, uint32_t index);
+void* list_remove (List* list, int32_t index);
 
 /**
  * Remove data from a list using thread safety.
@@ -499,7 +531,7 @@ void* list_remove (List* list, uint32_t index);
  * @param list  The list.
  * @param index The index.
  */
-void* list_remove_ts (List* list, uint32_t index);
+void* list_remove_ts (List* list, int32_t index);
 
 /**
  * Retrieve the tail of a list.
