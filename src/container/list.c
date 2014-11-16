@@ -83,11 +83,15 @@ int32_t dlist_find (DList* list, void* data) {
     int32_t    index;
     DListItem* item = list->head;
 
-    for (index = 0; NULL != item && item->data != data; index++) {
+    for (index = 0; NULL != item; index++) {
+        if (item->data == data) {
+            return index;
+        }
+
         item = item->next;
     }
 
-    return NULL != item ? index : -1;
+    return -1;
 }
 
 int32_t dlist_find_ts (DList* list, void* data) {
@@ -550,11 +554,15 @@ int32_t list_find (List* list, void* data) {
     int32_t   index;
     ListItem* item = list->head;
 
-    for (index = 0; NULL != item && item->data != data; index++) {
+    for (index = 0; NULL != item; index++) {
+        if (item->data == data) {
+            return index;
+        }
+
         item = item->next;
     }
 
-    return NULL != item ? index : -1;
+    return -1;
 }
 
 int32_t list_find_ts (List* list, void* data) {
