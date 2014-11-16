@@ -103,7 +103,7 @@ Stack* stack_new () {
 
     return stack;
 }
-
+#include <stdio.h>
 void* stack_pop (Stack* stack) {
     assert(NULL != stack);
     assert(0 < stack->count);
@@ -144,16 +144,20 @@ bool stack_push (Stack* stack, void* data) {
     if (stack->type == STACK_FIFO) {
         item->next = NULL;
 
-        if (NULL != stack->tail) {
-            stack->tail->next = item;
-        } else {
+        if (0 == stack->count) {
             stack->head = item;
+        } else {
+            stack->tail->next = item;
         }
 
         stack->tail = item;
     } else {
         item->next  = stack->head;
         stack->head = item;
+
+        if (0 == stack->count) {
+            stack->tail = item;
+        }
     }
 
     item->data = data;
