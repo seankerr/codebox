@@ -80,6 +80,7 @@ bool buffer_cleanup (Buffer* buffer) {
 
     if (NULL != buffer->mutex) {
         pthread_mutex_destroy(buffer->mutex);
+        free(buffer->mutex);
     }
 
     return true;

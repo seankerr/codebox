@@ -75,6 +75,7 @@ bool table_cleanup (Table* table) {
 
     if (NULL != table->mutex) {
         pthread_mutex_destroy(table->mutex);
+        free(table->mutex);
     }
 
     return true;

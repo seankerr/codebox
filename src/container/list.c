@@ -55,6 +55,7 @@ bool dlist_cleanup (DList* list) {
 
     if (NULL != list->mutex) {
         pthread_mutex_destroy(list->mutex);
+        free(list->mutex);
     }
 
     return true;
@@ -526,6 +527,7 @@ bool list_cleanup (List* list) {
 
     if (NULL != list->mutex) {
         pthread_mutex_destroy(list->mutex);
+        free(list->mutex);
     }
 
     return true;

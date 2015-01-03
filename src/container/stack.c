@@ -21,6 +21,7 @@ bool stack_cleanup (Stack* stack) {
 
     if (NULL != stack->mutex) {
         pthread_mutex_destroy(stack->mutex);
+        free(stack->mutex);
     }
 
     return true;
