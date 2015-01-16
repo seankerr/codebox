@@ -70,6 +70,7 @@ void test_buffer () {
     assert(0 == c->size % __BUFFER_CHUNK_SIZE);
     assert(0 == strncmp("Fancy", buffer_get_str(c), c->length));
     assert(buffer_cleanup(c));
+    free(c);
 
     assert(buffer_remove(b, 0, 6));
     assert(21 == b->length);
@@ -82,6 +83,7 @@ void test_buffer () {
     assert(0 == c->size % __BUFFER_CHUNK_SIZE);
     assert(0 == strncmp("Bopper Buffer Fluffer", buffer_get_str(c), c->length));
     assert(buffer_cleanup(c));
+    free(c);
 
     c = buffer_copy(b, 0, 6);
 
@@ -90,6 +92,7 @@ void test_buffer () {
     assert(0 == c->size % __BUFFER_CHUNK_SIZE);
     assert(0 == strncmp("Bopper", buffer_get_str(c), c->length));
     assert(buffer_cleanup(c));
+    free(c);
 
     assert(buffer_remove(b, 7, 7));
     assert(14 == b->length);

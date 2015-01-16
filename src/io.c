@@ -10,11 +10,38 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "codebox/container/buffer.h"
 #include "codebox/io.h"
 
 // -------------------------------------------------------------------------------------------------
 // FUNCTIONS
 // -------------------------------------------------------------------------------------------------
+
+bool io_dir_list (char* path, void (*callback) (char*, struct dirent*)) {
+    Buffer         buffer;
+    DIR*           dir   = opendir(path);
+    struct dirent* entry = NULL;
+    char*          file  = NULL;
+
+    buffer_init(&buffer, 0, false);
+
+    while (NULL != (entry = readdir(dir))) {
+        buffer_truncate(&buffer);
+        buffer_append_str(&buffer, path);
+        buffer_append_str(&buffer, "/");
+        buffer_append_str(&buffer, entry->d_name);
+
+        file = strndup((char*) buffer.data, buffer.length);
+
+        callback(file, entry);
+        free(file);
+    }
+
+    buffer_cleanup(&buffer);
+    closedir(dir);
+
+    return true;
+}
 
 unsigned char* io_file_read (char* path, uint32_t* length) {
     unsigned char* data    = NULL;

@@ -5,7 +5,7 @@ BUILD  = build
 LIB    = lib
 SRC    = src
 TEST   = test
-CFLAGS = -Wall -Werror -std=c99 -pedantic -fpic -c -I include
+CFLAGS = -Wall -Werror -std=gnu99 -pedantic -fPIC -c -I include
 LFLAGS = -lm
 
 SOURCES=$(shell find $(SRC)/ -type f -iname '*.c')

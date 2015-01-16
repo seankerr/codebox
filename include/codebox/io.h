@@ -13,6 +13,8 @@
 extern "C" {
 #endif
 
+#include <dirent.h>
+#include <stdbool.h>
 #include <stdint.h>
 
 // -------------------------------------------------------------------------------------------------
@@ -20,9 +22,17 @@ extern "C" {
 // -------------------------------------------------------------------------------------------------
 
 /**
+ * Retrieve a directory listing.
+ *
+ * @param path     The filesystem path.
+ * @param callback The callback function to execute for each entry.
+ */
+bool io_dir_list (char* path, void (*callback) (char*, struct dirent*));
+
+/**
  * Read a binary file.
  *
- * @param path   The file path.
+ * @param path   The filesystem path.
  * @param length The bytes read.
  */
 unsigned char* io_file_read (char* path, uint32_t* length);
@@ -30,7 +40,7 @@ unsigned char* io_file_read (char* path, uint32_t* length);
 /**
  * Read an ASCII file.
  *
- * @param path The file path.
+ * @param path The filesystem path.
  */
 char* io_file_read_str (char* path);
 
