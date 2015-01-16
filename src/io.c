@@ -23,6 +23,10 @@ bool io_dir_list (char* path, void (*callback) (char*, struct dirent*)) {
     struct dirent* entry = NULL;
     char*          file  = NULL;
 
+    if (NULL == dir) {
+        return false;
+    }
+
     buffer_init(&buffer, 0, false);
 
     while (NULL != (entry = readdir(dir))) {
