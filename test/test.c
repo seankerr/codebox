@@ -13,7 +13,7 @@
 #include "container/test_stack.h"
 #include "container/test_table.h"
 #include "test_io.h"
-#include "test_util.h"
+#include "test_string.h"
 
 int main (int arg, char** argv) {
     printf("Testing buffer...\n");
@@ -26,6 +26,6 @@ int main (int arg, char** argv) {
     test_table();
     printf("Testing io...\n");
     test_io();
-    printf("Testing util...\n");
-    test_util();
+    printf("Testing string...\n");
+    test_string();
 }
